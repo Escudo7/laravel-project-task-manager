@@ -1,5 +1,5 @@
 run:
-	php artisan serve
+	php -S localhost:8000 -t public/
 test:
 	vendor/bin/phpunit
 lint:
