@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "aba9213e1ea3eeb3541820dff14be2ec",
+    "content-hash": "c2637c137074418bc6b60f1155f3b242",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1475,6 +1475,74 @@
                 "monitoring"
             ],
             "time": "2019-10-02T06:24:31+00:00"
+        },
+        {
+            "name": "rollbar/rollbar-laravel",
+            "version": "v5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rollbar/rollbar-php-laravel.git",
+                "reference": "85be2c97cce60c588dbacb0a37a56d4b199c1aa7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rollbar/rollbar-php-laravel/zipball/85be2c97cce60c588dbacb0a37a56d4b199c1aa7",
+                "reference": "85be2c97cce60c588dbacb0a37a56d4b199c1aa7",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^6.0",
+                "php": ">=7.0",
+                "rollbar/rollbar": "^2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1",
+                "orchestra/testbench": "^4",
+                "phpunit/phpunit": "^8",
+                "satooshi/php-coveralls": "^1.0",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rollbar\\Laravel\\RollbarServiceProvider"
+                    ],
+                    "aliases": {
+                        "Rollbar": "Rollbar\\Laravel\\Facades\\Rollbar"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rollbar\\Laravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jens Segers",
+                    "homepage": "https://jenssegers.com"
+                },
+                {
+                    "name": "Artur Moczulski",
+                    "email": "artur.moczulski@gmail.com",
+                    "role": "Contractor @ Rollbar, Inc."
+                }
+            ],
+            "description": "Rollbar error monitoring integration for Laravel projects",
+            "homepage": "https://github.com/rollbar/rollbar-php-laravel",
+            "keywords": [
+                "error",
+                "laravel",
+                "logging",
+                "monitoring",
+                "rollbar"
+            ],
+            "time": "2019-10-02T07:15:39+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
