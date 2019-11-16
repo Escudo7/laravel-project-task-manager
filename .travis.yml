@@ -1,4 +1,5 @@
 language: php
 install: make install
-before_script: cp .env.travis .env
+before_script: 
+  - cp .env.travis .env
 script: make lint test
