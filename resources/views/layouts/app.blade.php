@@ -33,15 +33,9 @@
             padding: 1rem 1.5rem;
         }
 
-        .table {
-    border-bottom:0px !important;
-}
-.table th, .table td {
-    border: 1px !important;
-}
-.fixed-table-container {
-    border:0px !important;
-}
+        .big-text {
+            font-size: 1.3rem;
+        }
     </style>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
