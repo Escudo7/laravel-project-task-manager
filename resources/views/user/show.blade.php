@@ -5,6 +5,26 @@
 @endsection
 
 @section('content')
+    @guest
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-8">
+                <div class="card border-danger">
+                    <div class="card-body">
+                        <p>
+                            Для простмотра профиля {{ $user->name }}, пожалуйста, пройдите процедуру 
+                            <a href="{{ route('register') }}">регистрации</a>
+                            или 
+                            <a href="{{ route('login') }}">войдите</a>
+                            в свой профиль
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endguest
+    @auth
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-sm-8">
@@ -96,4 +116,5 @@
             </div>
         </div>
     </div>
+    @endauth
 @endsection

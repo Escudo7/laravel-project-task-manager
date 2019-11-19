@@ -40,7 +40,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="{{ route('start') }}">Task Manager</a>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <div class="navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ route('start') }}">Home</a>
@@ -51,17 +51,27 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 @guest
-                <li class="nav-item">
-                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                <li class="nav-item active">
+                     <a class="nav-link" href="{{ route('login') }}">Войти</a>
                 </li>
                 @if (Route::has('register'))
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
                 </li>
                 @endif
                 @else
-                <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                        Выйти
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">                            @csrf
+                    </form>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->name }} <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
