@@ -26,7 +26,7 @@
                                 <p>Имя</p>
                             </div>
                             <div class="col-sm-4">
-                                <p>{{ $user->firstname ?? 'не указано' }}</p>
+                                <p>{{ $user->firstname ?? '--' }}</p>
                             </div>
                         </div>
                         <div class="row big-text">
@@ -34,7 +34,7 @@
                                 <p>Фамилия</p>
                             </div>
                             <div class="col-sm-4">
-                                <p>{{ $user->lastname ?? 'не указана'}}</p>
+                                <p>{{ $user->lastname ?? '--'}}</p>
                             </div>
                         </div>
                         <div class="row big-text">
@@ -50,19 +50,19 @@
                                 <p>Пол</p>
                             </div>
                             <div class="col-sm-8">
-                                <p>{{ $user->sex ?? 'не указан' }}</p>
+                                <p>{{ $user->sex ?? '--' }}</p>
                             </div>
                         </div>
                         <div class="row big-text">
                             <div class="col-sm-4">
-                                <p>День рождения</p>
+                                <p>Дата рождения</p>
                             </div>
                             <div class="col-sm-8">
                                 <p>
                                     @if ($user->birth_day && $user->birth_month && $user->birth_year)
                                         {{ $user->birth_day }} - {{ $user->birth_month }} - {{ $user->birth_year }}
                                     @else 
-                                         не указан
+                                         --
                                     @endif
                                 </p>
                             </div>
@@ -72,7 +72,7 @@
                                 <p>Страна</p>
                             </div>
                             <div class="col-sm-8">
-                                <p>{{ $user->country ?? 'не указана' }}</p>
+                                <p>{{ $user->country ?? '--' }}</p>
                             </div>
                         </div>
                         <div class="row big-text">
@@ -80,7 +80,7 @@
                                 <p>Город</p>
                             </div>
                             <div class="col-sm-8">
-                                <p>{{ $user->city ?? 'не указан' }}</p>
+                                <p>{{ $user->city ?? '--' }}</p>
                             </div>
                         </div>
                         <div class="row big-text">

@@ -15,9 +15,9 @@
         <tr>
             <td>{{$user->id}}</a></td>
             <td><a href="{{ route('users.show', $user) }}">{{$user->name}}</a></td>
-            <td>{{$user->first_name}}</td>
-            <td>{{$user->last_name}}</td>
-            <td>{{$user->created_at}}</td>
+            <td>{{ $user->firstname ?? '--' }}</td>
+            <td>{{ $user->lastname ?? '--'}}</td>
+            <td>{{ $user->created_at }}</td>
         <tr>
         @endforeach
     </table>
