@@ -110,11 +110,16 @@
                             <div class="col-sm-8">
                                 <p>{{ $user->created_at }}</p>
                             </div>
+                            <div> 
+                                <a href="{{ route('users.destroy', $user) }}" class="btn btn-secondary" data-confirm="Вы уверены?" data-method="delete">Удалить</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
     @endauth
 @endsection
