@@ -110,8 +110,23 @@
                             <div class="col-sm-8">
                                 <p>{{ $user->created_at }}</p>
                             </div>
-                            <div> 
-                                <a href="{{ route('users.destroy', $user) }}" class="btn btn-secondary" data-confirm="Вы уверены?" data-method="delete">Удалить</a>
+                        </div>
+                        <div class="row big-text">
+                            <div class="col-sm-4">
+                                {{ Form::model($user, [
+                                    'url' => route('users.edit', $user),
+                                    'method' => 'GET',
+                                    'data-confirm' => 'test']) }}
+                                {{ Form::submit('Редактировать', ['class' => "btn btn-secondary"]) }}
+                                {{ Form::close() }}
+                            </div>
+                            <div class="col-sm-4">
+                                {{ Form::model($user, [
+                                    'url' => route('users.destroy', $user),
+                                    'method' => 'DELETE',
+                                    'data-confirm' => 'Вы действительно хотите удалить свой профиль?']) }}
+                                {{ Form::submit('Удалить профиль', ['class' => "btn btn-secondary"]) }}
+                                {{ Form::close() }}
                             </div>
                         </div>
                     </div>
