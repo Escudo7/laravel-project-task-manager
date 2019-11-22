@@ -105,13 +105,13 @@
                             <legend class="col-md-4 col-form-label text-md-right">Пол</legend>
                             <div class="col-md-6">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="sex1" id="sex" value="мужской">
+                                    <input class="form-check-input" type="radio" name="sex" id="sex" value="мужской">
                                     <label class="form-check-label" for="sex">
                                         Мужской
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sex2" id="sex" value="женский">
+                                <input class="form-check-input" type="radio" name="sex" id="sex" value="женский">
                                     <label class="form-check-label" for="sex">
                                         Женский
                                     </label>
