@@ -16,7 +16,7 @@ Route::get('/', function () {
         'success' => session('success'),
         'warning' => session('warning')
     ];
-    return view('start', compact('successMessage', 'message'));
+    return view('start', compact('message'));
 })->name('start');
 
 Auth::routes();
