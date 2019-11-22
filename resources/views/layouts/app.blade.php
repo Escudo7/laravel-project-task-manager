@@ -6,6 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-param" content="_token" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -68,29 +69,32 @@
                         document.getElementById('logout-form').submit();">
                         Выйти
                     </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">                            @csrf
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
                     </form>
                 </li>
-
                 <li class="nav-item active">
-                    <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }} <span class="caret"></span>
+                    <a class="nav-link" href="{{ route('users.show', Auth::user()->id) }}">
+                        {{ Auth::user()->name }} 
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
                 </li>
                 @endguest
             </ul>
         </div>
     </nav>
+
+    @if(isset($message))
+        @if($message['success'])
+        <div class="alert alert-success" role="alert">
+            {{ $message['success'] }}
+        </div>
+        @endif
+        @if($message['warning'])
+        <div class="alert alert-warning" role="alert">
+            {{ $message['warning'] }}
+        </div>
+        @endif
+    @endif
 
     <div class="header-h1 text-center bg-secondary text-white text-uppercase">
         <h1 class="font-weight-bold">

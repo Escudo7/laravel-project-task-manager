@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -23,14 +24,7 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
-
-    /**
+        /**
      * Create a new controller instance.
      *
      * @return void
@@ -38,6 +32,12 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    protected function redirectTo()
+    {
+        session()->flash('success','Вы были успешно зарегистрированы!');
+        return '/';
     }
 
     /**
@@ -49,9 +49,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'sex' => [Rule::in(['мужской', 'женский'])],
+            'birth_day' => ['integer', 'min:1', 'max:31', 'nullable'],
+            'birth_month' => ['integer', 'min:1', 'max:12', 'nullable'],
+            'birth_year' => ['integer', 'min:1930', 'max:2015', 'nullable'],
+            'country' => ['string', 'max:255', 'nullable'],
+            'city' => ['string', 'max:255', 'nullable'],
         ]);
     }
 
@@ -63,14 +69,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        print_r($data);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
-            'sex' => $data['sex'],
+            'sex' => $data['sex'] ?? null,
             'birth_day' => $data['birth_day'],
             'birth_month' => $data['birth_month'],
             'birth_year' => $data['birth_year'],

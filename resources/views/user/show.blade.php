@@ -27,6 +27,7 @@
     @auth
     <div class="container">
         <div class="row justify-content-center">
+            <div class="card-group col-sm-12">
             <div class="col-sm-8">
                 <div class="card">
                     <div class="card-header bg-secondary text-white text-center big-text">
@@ -111,22 +112,23 @@
                                 <p>{{ $user->created_at }}</p>
                             </div>
                         </div>
-                        <div class="row big-text">
-                            <div class="col-sm-4">
-                                {{ Form::model($user, [
-                                    'url' => route('users.edit', $user),
-                                    'method' => 'GET',
-                                    'data-confirm' => 'test']) }}
-                                {{ Form::submit('Редактировать', ['class' => "btn btn-secondary"]) }}
-                                {{ Form::close() }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white text-center big-text">
+                            Функции
+                        </div>
+                        <div class="card-body">
+                            <div class="row big-text">
+                                <a href="{{ route('users.edit_password', $user) }}" data-method="GET" class='text-dark'>Изменить пароль</a>
                             </div>
-                            <div class="col-sm-4">
-                                {{ Form::model($user, [
-                                    'url' => route('users.destroy', $user),
-                                    'method' => 'DELETE',
-                                    'data-confirm' => 'Вы действительно хотите удалить свой профиль?']) }}
-                                {{ Form::submit('Удалить профиль', ['class' => "btn btn-secondary"]) }}
-                                {{ Form::close() }}
+                            <div class="row big-text">
+                                <a href="{{ route('users.edit', $user) }}" data-method="GET" class='text-dark'>Редактировать профиль</a>
+                            </div>
+                            <div class="row big-text">
+                                <a href="{{ route('users.destroy', $user) }}" data-confirm="Вы уверены?" data-method="delete" class='text-dark'>Удалить профиль</a>
                             </div>
                         </div>
                     </div>

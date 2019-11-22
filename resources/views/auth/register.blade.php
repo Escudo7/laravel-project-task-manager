@@ -3,6 +3,15 @@
 @section('header', 'Форма регистрации')
 
 @section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -24,6 +33,9 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                                <small id="nameHelpBlock" class="form-text text-muted">
+                                    Обязательное поле
+                                </small>
                             </div>
                         </div>
 
@@ -38,6 +50,9 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                                <small id="emailHelpBlock" class="form-text text-muted">
+                                    Обязательное поле
+                                </small>
                             </div>
                         </div>
 
@@ -53,7 +68,7 @@
                                     </span>
                                 @enderror
                                 <small id="passwordHelpBlock" class="form-text text-muted">
-                                    Ваш пароль должен состоять из не менее чем 8 символов.
+                                    Обязательное поле. Ваш пароль должен состоять из не менее чем 8 символов
                                 </small>
                             </div>
                         </div>
@@ -63,6 +78,9 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <small id="nameHelpBlock" class="form-text text-muted">
+                                    Обязательное поле
+                                </small>
                             </div>
                         </div>
 
@@ -82,18 +100,25 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-4 col-form-label text-md-right">Пол</label>
-
-                            <div class="form-check form-check-inline col-md-2">
-                                <input class="form-check-input" type="radio" name="sex" id="sex1" value="мужской">
-                                <label class="form-check-label" for="sex1">Мужской</label>
+                        <fieldset class="form-group">
+                            <div class="row">
+                            <legend class="col-md-4 col-form-label text-md-right">Пол</legend>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="sex1" id="sex" value="мужской">
+                                    <label class="form-check-label" for="sex">
+                                        Мужской
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sex2" id="sex" value="женский">
+                                    <label class="form-check-label" for="sex">
+                                        Женский
+                                    </label>
+                                </div>
                             </div>
-                            <div class="form-check form-check-inline col-md-2">
-                                <input class="form-check-input" type="radio" name="sex" id="sex2" value="женский">
-                                <label class="form-check-label" for="sex2">Женский</label>
                             </div>
-                        </div>
+                        </fieldset>
 
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label text-md-right">Дата рождения</label>
@@ -129,7 +154,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-secondary">
                                     Зарегистрировать
                                 </button>
                             </div>

@@ -20,13 +20,12 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
+    protected function redirectTo()
+    {
+        session()->flash('success', 'Вы были успешно авторизованы!');
+        return '/';
+    }
+    
     /**
      * Create a new controller instance.
      *
@@ -35,5 +34,17 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function username()
+    {
+        return 'name';
+    }
+
+    public function logout()
+    {
+        \Auth::logout();
+        session()->flash('warning', 'Вы вышли из системы');
+        return redirect()->route('start');
     }
 }

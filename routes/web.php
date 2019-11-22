@@ -12,11 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('start');
+    $message = [
+        'success' => session('success'),
+        'warning' => session('warning')
+    ];
+    return view('start', compact('successMessage', 'message'));
 })->name('start');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('users/{user}/edit_password', 'UserController@edit_password')
+    ->name('users.edit_password');
+
+Route::patch('users/{user}/update_password', 'UserController@update_password')
+    ->name('users.update_password');
 
 Route::resource('users', 'UserController', ['except' => ['create', 'store']]);
