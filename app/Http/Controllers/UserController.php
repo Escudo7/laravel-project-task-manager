@@ -64,6 +64,10 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        //print_r($request->user()->id);
+        //print_r("\n");
+        //print_r($user->id);
+        
         if ($request->user() != $user) {
             session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
             return redirect()->route('start');
@@ -71,7 +75,7 @@ class UserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'sex' => [Rule::in(['мужской', 'женский'])],
+            'sex' => [Rule::in(['мужской', 'женский']), 'nullable'],
             'birth_day' => ['integer', 'min:1', 'max:31', 'nullable'],
             'birth_month' => ['integer', 'min:1', 'max:12', 'nullable'],
             'birth_year' => ['integer', 'min:1930', 'max:2015', 'nullable'],

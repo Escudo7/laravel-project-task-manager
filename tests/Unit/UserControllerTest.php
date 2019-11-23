@@ -14,8 +14,10 @@ class userControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(\App\User::class)->create();
-        $this->data = array_merge($this->user->toArray(), [
+        factory(\App\User::class)->create();
+        $this->user = \App\User::first();
+
+        $this->data = array_replace($this->user->toArray(), [
             'firstname' => 'test',
             'lastname' => 'test',
             'birth_day' => 1,
@@ -24,7 +26,7 @@ class userControllerTest extends TestCase
             'country' => 'kurkudu',
             'city' => 'city'
         ]);
-        $this->invalidData = array_merge($this->user->toArray(), [
+        $this->invalidData = array_replace($this->user->toArray(), [
             'firstname' => 'test',
             'lastname' => 'test',
             'birth_day' => 1,
@@ -47,7 +49,8 @@ class userControllerTest extends TestCase
 
     public function testUpdateWithInvalidData()
     {
-        $response = $this->patch(route('users.update', $this->user), $this->invalidData);
+        $response = $this->actingAs($this->user)
+            ->patch(route('users.update', $this->user), $this->invalidData);
         $response->assertStatus(302);
         $this->assertDatabaseHas('users', $this->user->toArray());
     }
@@ -67,7 +70,6 @@ class userControllerTest extends TestCase
     public function testDestroy()
     {
         $response = $this->actingAs($this->user)
-        ->withSession(['foo' => 'bar'])
             ->delete(route('users.destroy', $this->user));
         $response->assertStatus(302);
         $this->assertEquals(0, \App\User::count());
