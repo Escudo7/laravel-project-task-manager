@@ -115,6 +115,7 @@
                         </div>
                     </div>
                 </div>
+                @if($user == $currentUser)
                 <div class="col-sm-4">
                     <div class="card">
                         <div class="card-header bg-secondary text-white text-center big-text">
@@ -133,6 +134,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div>

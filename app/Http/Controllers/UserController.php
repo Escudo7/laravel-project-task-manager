@@ -23,26 +23,34 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
         $message = [
             'success' => session('success'),
-            'warning' => session('warning')
+            'warning' => session('warning'),
+            'error' => session('error')
         ];
-        return view('user.show', compact('user', 'message'));
+        $currentUser = $request->user();
+        return view('user.show', compact('user', 'message', 'currentUser'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Request $request, User $user)
     {
+        if ($request->user() != $user) {
+            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            return redirect()->route('start');
+        }
         return view('user.edit', compact('user'));
     }
 
@@ -56,6 +64,10 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        if ($request->user() != $user) {
+            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            return redirect()->route('start');
+        }
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
@@ -68,31 +80,41 @@ class UserController extends Controller
         ]);
         $user->fill($request->all());
         $user->save();
-        \Session::flash('success','Ваш профиль был успешно изменен!');
+        session()->flash('success','Ваш профиль был успешно изменен!');
         return redirect()->route('users.show', $user);
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
+        if ($request->user() != $user) {
+            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            return redirect()->route('start');
+        }
         $user->delete();
-        \Session::flash('warning','Ваш профиль был удален');
+        session()->flash('warning','Ваш профиль был удален');
         return redirect()->route('start');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit_password(User $user)
+    public function edit_password(Request $request, User $user)
     {
+        if ($request->user() != $user) {
+            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            return redirect()->route('start');
+        }
         return view('user.edit_password', compact('user'));
     }
 
@@ -105,6 +127,10 @@ class UserController extends Controller
      */
     public function update_password(Request $request, User $user)
     {
+        if ($request->user() != $user) {
+            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            return redirect()->route('start');
+        }
         $request->validate([
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);

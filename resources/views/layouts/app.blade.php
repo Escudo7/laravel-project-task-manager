@@ -94,6 +94,11 @@
             {{ $message['warning'] }}
         </div>
         @endif
+        @if($message['error'])
+        <div class="alert alert-danger" role="alert">
+            {{ $message['error'] }}
+        </div>
+        @endif
     @endif
 
     <div class="header-h1 text-center bg-secondary text-white text-uppercase">

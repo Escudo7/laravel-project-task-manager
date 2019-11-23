@@ -14,7 +14,8 @@
 Route::get('/', function () {
     $message = [
         'success' => session('success'),
-        'warning' => session('warning')
+        'warning' => session('warning'),
+        'error' => session('error')
     ];
     return view('start', compact('message'));
 })->name('start');

@@ -38,7 +38,8 @@ class userControllerTest extends TestCase
     public function testUpdate()
     {
         $this->assertEquals(1, \App\User::count());
-        $response = $this->patch(route('users.update', $this->user), $this->data);
+        $response = $this->actingAs($this->user)
+            ->patch(route('users.update', $this->user), $this->data);
         $response->assertStatus(302);
         $this->assertEquals(1, \App\User::count());
         $this->assertDatabaseHas('users', $this->data);
@@ -55,5 +56,20 @@ class userControllerTest extends TestCase
     {
         $response = $this->get(route('users.index'));
         $response->assertStatus(200);
+    }
+
+    public function testView()
+    {
+        $response = $this->get(route('users.show', $this->user));
+        $response->assertStatus(200);
+    }
+
+    public function testDestroy()
+    {
+        $response = $this->actingAs($this->user)
+        ->withSession(['foo' => 'bar'])
+            ->delete(route('users.destroy', $this->user));
+        $response->assertStatus(302);
+        $this->assertEquals(0, \App\User::count());
     }
 }
