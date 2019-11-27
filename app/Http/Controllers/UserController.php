@@ -35,7 +35,8 @@ class UserController extends Controller
             'error' => session('error')
         ];
         $currentUser = $request->user();
-        return view('user.show', compact('user', 'message', 'currentUser'));
+        $tasks = \App\Task::all();
+        return view('user.show', compact('user', 'message', 'currentUser', 'tasks'));
     }
 
     /**

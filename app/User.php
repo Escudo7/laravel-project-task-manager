@@ -46,6 +46,6 @@ class User extends Authenticatable
 
     public function assignedTasks()
     {
-        return $this->hasMany('App\Task', 'assignedTo');
+        return $this->hasMany('App\Task', 'assignedTo_id');
     }
 }
