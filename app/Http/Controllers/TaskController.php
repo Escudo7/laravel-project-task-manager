@@ -123,9 +123,10 @@ class TaskController extends Controller
             'tags' => ['exists:tags,id', 'nullable']
         ]);
         $date = array_filter($request->all(), function ($key) {
-            $key !== 'tags' && $key !== 'newTag';
-        });
-        
+            //print_r($key);
+            $key !== 'tags' || $key !== 'newTag';
+        }, ARRAY_FILTER_USE_KEY);
+        print_r($date);
         //print_r($request->all());
         $task->fill($date);
         if ($request['tags']) {
@@ -133,7 +134,7 @@ class TaskController extends Controller
         }
         $task->save();
         session()->flash('success','Задача была изменена');
-        return redirect()->route('tasks.show', $task);
+        //return redirect()->route('tasks.show', $task);
     }
 
     /**
