@@ -29,3 +29,8 @@ Route::patch('users/{user}/update_password', 'UserController@update_password')
     ->name('users.update_password');
 
 Route::resource('users', 'UserController', ['except' => ['create', 'store']]);
+
+Route::patch('tasks/{task}/get_task', 'TaskController@get_task')
+    ->name('tasks.get_task');
+
+Route::resource('tasks', 'TaskController', ['except' => ['destroy']]);

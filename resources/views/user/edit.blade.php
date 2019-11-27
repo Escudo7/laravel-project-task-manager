@@ -22,9 +22,7 @@
                     {{ Form::model($user, [
                         'url' => route('users.update', $user),
                         'method' => 'PATCH']) }}
-                    
-                        @csrf
-
+                    @csrf
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Login (псевдоним)</label>
 

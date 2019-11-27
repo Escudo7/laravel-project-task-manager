@@ -38,7 +38,7 @@
                                     </span>
                                 @enderror
                                 <small id="passwordHelpBlock" class="form-text text-muted">
-                                    Обязательное поле. Ваш пароль должен состоять из не менее чем 8 символов
+                                    Ваш пароль должен состоять не менее чем из 8 символов
                                 </small>
                             </div>
                         </div>
@@ -48,9 +48,6 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                                <small id="nameHelpBlock" class="form-text text-muted">
-                                    Обязательное поле
-                                </small>
                             </div>
                         </div>
 

@@ -123,10 +123,13 @@
                         </div>
                         <div class="card-body">
                             <div class="row big-text">
-                                <a href="{{ route('users.edit_password', $user) }}" data-method="GET" class='text-dark'>Изменить пароль</a>
+                                <a href="{{ route('tasks.create') }}" class='text-dark'>Создать задачу</a>
                             </div>
                             <div class="row big-text">
-                                <a href="{{ route('users.edit', $user) }}" data-method="GET" class='text-dark'>Редактировать профиль</a>
+                                <a href="{{ route('users.edit_password', $user) }}" class='text-dark'>Изменить пароль</a>
+                            </div>
+                            <div class="row big-text">
+                                <a href="{{ route('users.edit', $user) }}" class='text-dark'>Редактировать профиль</a>
                             </div>
                             <div class="row big-text">
                                 <a href="{{ route('users.destroy', $user) }}" data-confirm="Вы уверены?" data-method="delete" class='text-dark'>Удалить профиль</a>

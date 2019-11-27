@@ -51,6 +51,9 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ route('users.index') }}">Пользователи</a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ route('tasks.index') }}">Задачи</a>
+                </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 @guest
