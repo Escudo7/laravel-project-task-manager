@@ -149,7 +149,7 @@
                 </div>
             </div>
         </div>
-        @if($user == $currentUser)
+        @if($user->id == $currentUser->id)
             <div class="col-sm-3">
                 <div class="card">
                     <div class="card-header bg-secondary text-white text-center big-text">
