@@ -37,8 +37,7 @@
                             <label for="description" class="col-md-4 col-form-label text-md-right">Описание</label>
 
                             <div class="col-md-6">
-                                <textarea id="description" class="form-control" name="description" value="{{ old('description') }}" rows="3">
-                                </textarea>
+                                <textarea id="description" class="form-control" name="description" value="{{ old('description') }}" rows="3"></textarea>
                             </div>
                         </div>
 
@@ -51,6 +50,24 @@
                                     <option value="{{ $user->id}} ">{{ $user->name }}</option>
                                 @endforeach
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="tags" class="col-md-4 col-form-label text-md-right">Выбрать тэги</label>
+                            <div class="col-md-6">
+                                <select multiple class="form-control" id="tags[]" name="tags[]">
+                                @foreach($tags as $tag)
+                                    <option value="{{ $tag->id }} ">{{ $tag->name }}</option>
+                                @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="newTag" class="col-md-4 col-form-label text-md-right">Новый тег</label>
+                            <div class="col-md-6">
+                                <input id="newTag" type="text" class="form-control" name="newTag" value="{{ old('newTag') }}">
                             </div>
                         </div>
 

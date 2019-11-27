@@ -17,8 +17,26 @@
             <td>{{$task->id}}</a></td>
             <td><a href="{{ route('tasks.show', $task) }}">{{$task->name}}</a></td>
             <td><a href="{{ route('users.show', $task->creator) }}">{{ $task->creator->name }}</a></td>
-            <td>{{ $task->assignedTo ? $task->assignedTo->name : 'не назначен' }}</td>
-            <td>{{ $task->status->name }}</td>
+            <td>
+                @if ($task->assignedTo)
+                    <a href="{{ route('users.show', $task->assignedTo) }}">{{ $task->assignedTo->name }}</a>
+                @else 
+                    не назначен
+                @endif
+            </td>
+            @if($task->status->id == 1)
+                <td class="text-warning">
+                    {{ $task->status->name }}
+                </td>
+            @elseif($task->status->id == 4)
+                <td class="text-success">
+                    {{ $task->status->name }}
+                </td>
+            @else
+                <td>
+                    {{ $task->status->name }}
+                </td>
+            @endif
             <td>{{ $task->created_at }}</td>
         <tr>
         @endforeach

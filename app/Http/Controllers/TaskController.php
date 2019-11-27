@@ -38,7 +38,8 @@ class TaskController extends Controller
         }
         $task = new Task();
         $users = \App\User::all();
-        return view('task.create', compact('task', 'users'));
+        $tags = \App\Tag::all();
+        return view('task.create', compact('task', 'users', 'tags'));
     }
 
     /**
@@ -54,13 +55,26 @@ class TaskController extends Controller
             return redirect()->route('start');
         }
         $request->validate([
-            'name' => ['required', 'string', 'max:255']
+            'name' => ['required', 'string', 'max:255'],
+            'assignedTo_id' => ['exists:users,id', 'nullable'],
+            'tags' => ['exists:tags,id', 'nullable']
         ]);
+        $date = array_filter($request->all(), function ($key) {
+            return $key !== 'tags' && $key !== 'newTag';
+        }, ARRAY_FILTER_USE_KEY);
         $task = new Task();
-        $task->fill($request->all());
+        $task->fill($date);
         $task->creator()->associate($request->user());
         $task->status_id = 1;
         $task->save();
+        if ($request['tags']) {
+            $task->tags()->sync($request['tags']);
+        }
+        if ($request['newTag']) {
+            $newTag = new \App\Tag(['name' => $request['newTag']]);
+            $newTag->save();
+            $task->tags()->attach($newTag);
+        }
         session()->flash('success','Задача успешно создана');
         return redirect()->route('tasks.show', $task);
     }
@@ -123,18 +137,19 @@ class TaskController extends Controller
             'tags' => ['exists:tags,id', 'nullable']
         ]);
         $date = array_filter($request->all(), function ($key) {
-            //print_r($key);
-            $key !== 'tags' || $key !== 'newTag';
+            return $key !== 'tags' && $key !== 'newTag';
         }, ARRAY_FILTER_USE_KEY);
-        print_r($date);
-        //print_r($request->all());
         $task->fill($date);
         if ($request['tags']) {
             $task->tags()->sync($request['tags']);
+        }if ($request['newTag']) {
+            $newTag = new \App\Tag(['name' => $request['newTag']]);
+            $newTag->save();
+            $task->tags()->attach($newTag);
         }
         $task->save();
         session()->flash('success','Задача была изменена');
-        //return redirect()->route('tasks.show', $task);
+        return redirect()->route('tasks.show', $task);
     }
 
     /**
@@ -151,8 +166,29 @@ class TaskController extends Controller
             return redirect()->route('start');
         }
         $task->assignedTo()->associate($request->user());
+        $task->status_id = 2;
         $task->save();
         session()->flash('success','Вы успешно взяли задачу!');
+        return redirect()->route('tasks.show', $task);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Task  $task
+     * @return \Illuminate\Http\Response
+     */
+    public function deny_task(Request $request, Task $task)
+    {
+        if (!\Auth::check()) {
+            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            return redirect()->route('start');
+        }
+        $task->assignedTo()->dissociate();
+        $task->status_id = 1;
+        $task->save();
+        session()->flash('warning','Вы отказались от задачи');
         return redirect()->route('tasks.show', $task);
     }
 }

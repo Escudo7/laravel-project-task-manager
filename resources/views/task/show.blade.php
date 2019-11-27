@@ -58,13 +58,22 @@
                                         <a href="{{ route('users.show', $task->assignedTo) }}">
                                             {{ $task->assignedTo->name }}
                                         </a>
+                                        @if($currentUser == $task->assignedTo)
+                                            <div class="btn btn-secondary">
+                                                <a href="{{ route('tasks.deny_task', $task) }}" data-method="PATCH" class="text-white">
+                                                    Отказаться от задачи
+                                                </a>
+                                            </div>
+                                        @endif
                                     @else
                                         не назначен
-                                        <div class="btn btn-secondary">
-                                            <a href="{{ route('tasks.get_task', $task) }}" data-method="PATCH" class="text-white">
-                                                Забрать задачу
-                                            </a>
-                                        </div>
+                                        @if(Auth::check())
+                                            <div class="btn btn-secondary">
+                                                <a href="{{ route('tasks.get_task', $task) }}" data-method="PATCH" class="text-white">
+                                                    Забрать задачу
+                                                </a>
+                                            </div>
+                                        @endif
                                     @endif
 
                                 </p>

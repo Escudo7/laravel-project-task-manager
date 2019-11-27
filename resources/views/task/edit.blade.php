@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="tags" class="col-md-4 col-form-label text-md-right">Выбрать тэги</label>
+                            <label for="tags" class="col-md-4 col-form-label text-md-right">Выбрать теги</label>
                             <div class="col-md-6">
                                 <select multiple class="form-control" id="tags[]" name="tags[]">
                                 @foreach($tags as $tag)
