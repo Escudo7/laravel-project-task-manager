@@ -22,6 +22,10 @@ class UserCommentController extends Controller
      */
     public function store(Request $request, User $user)
     {
+        $request->validate([
+            'body' => ['required', 'string', 'max:255'],
+            'task_id' => ['required', 'exists:tasks,id']
+        ]);
         $comment = $user->comments()->make();
         $comment->fill($request->all());
         $comment->save();

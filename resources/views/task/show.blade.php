@@ -3,6 +3,15 @@
 @section('header', 'просмотр задачи')
 
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="card-group col-sm">
     <div class="col">
         <div class="card">
@@ -103,7 +112,7 @@
                 Комментарии
             </div>
             <div class="card-body p-0">
-                @foreach($task->comments as $comment)
+                @foreach($task->comments()->orderBy('created_at')->get() as $comment)
                 <div class="card my-2">
                     <div class="card-body">
                         <div>
