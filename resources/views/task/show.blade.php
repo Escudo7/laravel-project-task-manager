@@ -102,9 +102,23 @@
             <div class="card-header bg-secondary text-white text-center big-text">
                 Комментарии
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 @foreach($task->comments as $comment)
-                    {{ $comment->body }}
+                <div class="card my-2">
+                    <div class="card-body">
+                        <div>
+                            Дата:
+                            {{ $comment->created_at }}
+                        </div>
+                        <div>
+                            Автор
+                            <a href="{{ route('users.show', $comment->creator) }}">{{ $comment->creator->name }}</a>
+                        </div>
+                        <div>
+                            {{ $comment->body }}
+                        </div>
+                    </div>
+                </div>
                 @endforeach
             </div>
         </div>
@@ -115,12 +129,13 @@
             </div>
             <div class="card-body">
                 {{ Form::model($comment, [
-                    'url' => route('users.comments.store', [$currentUser, $comment]),
+                    'url' => route('users.comments.store', $currentUser),
                     'method' => 'POST']) }}
                 @csrf
                     <div class="form-group row">
-                            <textarea id="newComment" class="form-control" name="newComment" rows="3">{{ old('newComment') }}</textarea>
+                            <textarea id="body" class="form-control" name="body" rows="3">{{ old('body') }}</textarea>
                     </div>
+                    <input type="hidden" name="task_id" id="task_id" value="{{ $task->id }}">
                     <div class="form-group row">
                         <button type="submit" class="btn btn-secondary">
                             Сохранить

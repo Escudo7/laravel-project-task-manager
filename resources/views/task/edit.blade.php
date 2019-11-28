@@ -84,7 +84,7 @@
                         <div class="form-group row">
                             <label class="col-md-4 form-check-label text-md-right" for="dropTags">Удалить теги</label>
                             <div class="form-check col-md-6 ml-3">
-                                <input type="checkbox" class="form-check-input" name="dropTags" id="dropTags">                            </div>
+                                <input type="checkbox" class="form-check-input" name="dropTags" id="dropTags">
                             </div>
                         </div>
 

@@ -38,4 +38,4 @@ Route::patch('tasks/{task}/deny_task', 'TaskController@deny_task')
 
 Route::resource('tasks', 'TaskController', ['except' => ['destroy']]);
 
-Route::resource('users.comments', 'UserCommentController', ['except' => ['create', 'index', 'show']]);
+Route::resource('users.comments', 'UserCommentController', ['only' => ['store']]);
