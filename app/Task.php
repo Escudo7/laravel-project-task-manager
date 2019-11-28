@@ -20,12 +20,12 @@ class Task extends Model
 
     public function creator()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User')->withTrashed();
     }
 
     public function assignedTo()
     {
-        return $this->belongsTo('App\User', 'assignedTo_id');
+        return $this->belongsTo('App\User', 'assignedTo_id')->withTrashed();
     }
 
     public function status()

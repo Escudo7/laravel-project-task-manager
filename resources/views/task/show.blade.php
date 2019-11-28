@@ -49,7 +49,7 @@
                     </div>
                     <div class="col">
                         <p>
-                            <a href="{{ route('users.show', $task->creator) }}">
+                            <a href="{{ $task->creator->trashed() ? '' : route('users.show', $task->creator) }}">
                                 {{ $task->creator->name }}
                             </a>
                         </p>
@@ -62,7 +62,7 @@
                     <div class="col">
                         <p>
                             @if($task->assignedTo)
-                                <a href="{{ route('users.show', $task->assignedTo) }}">
+                                <a href="{{ $task->assignedTo->trashed() ? '' : route('users.show', $task->assignedTo) }}">
                                     {{ $task->assignedTo->name }}
                                 </a>
                                 @if($currentUser == $task->assignedTo)
@@ -121,7 +121,9 @@
                         </div>
                         <div>
                             Автор
-                            <a href="{{ route('users.show', $comment->creator) }}">{{ $comment->creator->name }}</a>
+                            <a href="{{ $comment->creator->trashed() ? '' : route('users.show', $comment->creator) }}">
+                                {{ $comment->creator->name }}
+                            </a>
                         </div>
                         <div>
                             {{ $comment->body }}

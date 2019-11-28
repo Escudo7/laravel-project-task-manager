@@ -14,12 +14,18 @@
         </tr>
         @foreach($tasks as $task)
         <tr>
-            <td>{{$task->id}}</a></td>
+            <td>{{$task->id}}</td>
             <td><a href="{{ route('tasks.show', $task) }}">{{$task->name}}</a></td>
-            <td><a href="{{ route('users.show', $task->creator) }}">{{ $task->creator->name }}</a></td>
+            <td>
+                <a href="{{ $task->creator->trashed() ? '' : route('users.show', $task->creator) }}">
+                    {{ $task->creator->name }}
+                </a>
+            </td>
             <td>
                 @if ($task->assignedTo)
-                    <a href="{{ route('users.show', $task->assignedTo) }}">{{ $task->assignedTo->name }}</a>
+                    <a href="{{ $task->assignedTo->trashed() ? '' : route('users.show', $task->assignedTo) }}">
+                        {{ $task->assignedTo->name }}
+                    </a>
                 @else 
                     не назначен
                 @endif
