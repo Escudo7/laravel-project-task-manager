@@ -65,13 +65,13 @@
                                 @endif
                             @else
                                 не назначен
-                                @if(Auth::check())
+                                @auth
                                     <div class="btn btn-secondary">
                                         <a href="{{ route('tasks.get_task', $task) }}" data-method="PATCH" class="text-white">
                                             Забрать задачу
                                         </a>
                                     </div>
-                                @endif
+                                @endauth
                             @endif
                         </p>
                     </div>
@@ -123,6 +123,7 @@
             </div>
         </div>
         @endif
+        @auth
         <div class="card border-light">
             <div class="card-header bg-secondary text-white text-center big-text">
                 Добавить новый комментарий
@@ -144,6 +145,7 @@
                 {{ Form::close()}}
             </div>
         </div>
+        @endauth
     </div>
 </div>
 @endsection
