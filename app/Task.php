@@ -32,4 +32,9 @@ class Task extends Model
     {
         return $this->belongsTo('App\TaskStatus');
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
 }

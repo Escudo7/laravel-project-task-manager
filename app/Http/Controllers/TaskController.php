@@ -95,7 +95,8 @@ class TaskController extends Controller
         ];
         $currentUser = $request->user();
         $tags = $task->tags()->get();
-        return view('task.show', compact('task', 'message', 'currentUser', 'tags'));
+        $comment = new \App\Comment;
+        return view('task.show', compact('task', 'message', 'currentUser', 'tags', 'comment'));
     }
 
     /**

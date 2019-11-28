@@ -24,19 +24,9 @@
                     не назначен
                 @endif
             </td>
-            @if($task->status->id == 1)
-                <td class="text-warning">
-                    {{ $task->status->name }}
-                </td>
-            @elseif($task->status->id == 4)
-                <td class="text-success">
-                    {{ $task->status->name }}
-                </td>
-            @else
-                <td>
-                    {{ $task->status->name }}
-                </td>
-            @endif
+            <td class="{{ $task->status->id == 4 ? 'text-success' : '' }}">
+                {{ $task->status->name }}
+            </td>
             <td>{{ $task->created_at }}</td>
         <tr>
         @endforeach
