@@ -102,6 +102,10 @@ class UserController extends Controller
             session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
             return redirect()->route('start');
         }
+        foreach ($user->assignedTasks as $task) {
+            $task->assignedTo()->dissociate();
+            $task->save();
+        }
         $user->delete();
         session()->flash('warning','Ваш профиль был удален');
         return redirect()->route('start');

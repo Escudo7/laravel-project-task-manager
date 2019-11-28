@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTasksTable extends Migration
+class CreateTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,27 +13,6 @@ class CreateTasksTable extends Migration
      */
     public function up()
     {
-        Schema::create('task_statuses', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->softDeletes();
-            $table->timestamps();
-        });
-        
-        Schema::create('tasks', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->bigInteger('status_id');
-            $table->foreign('status_id')->references('id')->on('task_statuses');
-            $table->bigInteger('creator_id');
-            $table->foreign('creator_id')->references('id')->on('users');
-            $table->bigInteger('assignedTo_id')->nullable();
-            $table->foreign('assignedTo_id')->references('id')->on('users');
-            $table->softDeletes();
-            $table->timestamps();
-        });
-
         Schema::create('tags', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
@@ -60,8 +39,6 @@ class CreateTasksTable extends Migration
     public function down()
     {
         Schema::dropIfExists('tag_task');
-        Schema::dropIfExists('tasks');
-        Schema::dropIfExists('task_statuses');
         Schema::dropIfExists('tags');
     }
 }
