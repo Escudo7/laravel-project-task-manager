@@ -59,11 +59,8 @@ class TaskController extends Controller
             'assignedTo_id' => ['exists:users,id', 'nullable'],
             'tags' => ['exists:tags,id', 'nullable']
         ]);
-        $date = array_filter($request->all(), function ($key) {
-            return $key !== 'tags' && $key !== 'newTag';
-        }, ARRAY_FILTER_USE_KEY);
         $task = new Task();
-        $task->fill($date);
+        $task->fill($request->except('tags', 'newTag'));
         $task->creator()->associate($request->user());
         $task->status_id = 1;
         $task->save();
@@ -137,13 +134,14 @@ class TaskController extends Controller
             'assignedTo_id' => ['exists:users,id', 'nullable'],
             'tags' => ['exists:tags,id', 'nullable']
         ]);
-        $date = array_filter($request->all(), function ($key) {
-            return $key !== 'tags' && $key !== 'newTag';
-        }, ARRAY_FILTER_USE_KEY);
-        $task->fill($date);
+        $task->fill($request->except('dropTags', 'tags', 'newTag'));
+        if ($request['dropTags']) {
+            $task->tags()->sync([]);
+        }
         if ($request['tags']) {
             $task->tags()->sync($request['tags']);
-        }if ($request['newTag']) {
+        }
+        if ($request['newTag']) {
             $newTag = new \App\Tag(['name' => $request['newTag']]);
             $newTag->save();
             $task->tags()->attach($newTag);

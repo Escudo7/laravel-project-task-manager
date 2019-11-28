@@ -70,8 +70,26 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-4 text-md-right">
+                                <p>Прикрепленные теги</p>
+                            </div>
+                            <div class="col">
+                                @foreach($task->tags as $tag)
+                                    {{ $tag->name }}
+                                @endforeach
+                            </div>
+                        </div>
+
                         <div class="form-group row">
-                            <label for="tags" class="col-md-4 col-form-label text-md-right">Выбрать теги</label>
+                            <label class="col-md-4 form-check-label text-md-right" for="dropTags">Удалить теги</label>
+                            <div class="form-check col-md-6 ml-3">
+                                <input type="checkbox" class="form-check-input" name="dropTags" id="dropTags">                            </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="tags" class="col-md-4 col-form-label text-md-right">Изменить теги</label>
                             <div class="col-md-6">
                                 <select multiple class="form-control" id="tags[]" name="tags[]">
                                 @foreach($tags as $tag)
