@@ -44,5 +44,8 @@
         <div class="btn btn-secondary ml-3 mt-3">
             <a href="{{ route('tasks.create') }}" class="text-white">Создать новую задачу</a>
         </div>
+        <div class="btn btn-secondary ml-3 mt-3">
+            <a href="{{ route('task_statuses.index') }}" class="text-white">Список статусов задач</a>
+        </div>
     @endif
 @endsection

@@ -39,6 +39,9 @@
         .big-text {
             font-size: 1.3rem;
         }
+        .botton-color {
+            background-color: #6596ad;
+        }
     </style>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">

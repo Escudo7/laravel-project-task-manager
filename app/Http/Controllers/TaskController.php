@@ -26,16 +26,6 @@ class TaskController extends Controller
      */
     public function create()
     {
-        if (\App\TaskStatus::first() === null) {
-            $newStatus = new \App\TaskStatus(['name' => 'new task']);
-            $newStatus->save();
-            $workStatus = new \App\TaskStatus(['name' => 'working']);
-            $workStatus->save();
-            $testStatus = new \App\TaskStatus(['name' => 'testing']);
-            $testStatus->save();
-            $terminateStatus = new \App\TaskStatus(['name' => 'terminated']);
-            $terminateStatus->save();
-        }
         $task = new Task();
         $users = \App\User::all();
         $tags = \App\Tag::all();
