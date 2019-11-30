@@ -11,12 +11,40 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::paginate(10);
-        return view('task.index', compact('tasks'));
+        //print_r($_GET);
+        
+        $users = \App\User::all();
+        $tags = \App\Tag::all();
+        $statuses = \App\TaskStatus::all();
+
+        $query = Task::orderBy('id');
+        $date = $request->all();
+        if (isset($date['filter']['myTasks'])) {
+            $query = $query->myTasks($request->user()->id);
+        } else {
+            $query = array_reduce(array_keys($date), function($acc, $key) use ($date) {
+                if(!isset($date[$key])) {
+                    return $acc;
+                }
+                switch($key) {
+                    case 'creator':
+                        return $acc->creator($date[$key]);
+                    case 'executor':
+                        return $acc->executor($date[$key]);
+                    case 'status' :
+                        return $acc->status($date[$key]);
+                    case 'tag' :
+                        return $acc->tag($date[$key]);
+                }
+            }, $query);
+        }
+        $tasks = $query->paginate(10);
+        return view('task.index', compact('tasks', 'users', 'tags', 'statuses'));
     }
 
     /**
