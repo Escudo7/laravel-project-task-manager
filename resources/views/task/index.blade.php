@@ -5,9 +5,6 @@
 @section('content')
 <div class='col'>
 <div class="card mb-2">
-<div class="card-header bg-secondary text-white text-center p-0 align-items-center" style=" height: 1.7rem;">
-Панель фильтрации
-</div>
 <div class="card-body">
 @auth
 {{ Form::open([
@@ -32,7 +29,7 @@
         <div class="form-group col-md-3 pl-4 pr-2 my-2">
             <label for="creator">Создатель задачи</label>
             <select class="form-control" id="creator" name="creator">
-                <option>не выбран</option>
+                <option value="">не выбран</option>
                 @foreach($users as $user)
                     @if (isset($_GET['creator']) && $_GET['creator'] == $user->id)
                         <option selected value="{{ $user->id }}">{{ $user->name }}</option>
@@ -46,7 +43,7 @@
         <div class="form-group col-md-3 my-2">
             <label for="executor">Исполнитель</label>
             <select class="form-control" id="executor" name="executor">
-                <option>не выбран</option>
+                <option value="">не выбран</option>
                 @foreach($users as $user)
                     @if (isset($_GET['executor']) && $_GET['executor'] == $user->id)
                         <option selected value="{{ $user->id }} ">{{ $user->name }}</option>
@@ -60,7 +57,7 @@
         <div class="form-group col-md-3 my-2">
             <label for="status">Статус</label>
             <select class="form-control" id="status" name="status">
-                <option>не выбран</option>
+                <option value="">не выбран</option>
                 @foreach($statuses as $status)
                     @if (isset($_GET['status']) && $_GET['status'] == $status->id)
                         <option selected value="{{ $status->id }} ">{{ $status->name }}</option>
@@ -74,7 +71,7 @@
         <div class="form-group col-md-3 pr-4 my-2">
             <label for="tag">Тег</label>
             <select class="form-control" id="tag" name="tag">
-                <option>не выбран</option>
+                <option value="">не выбран</option>
                 @foreach($tags as $tag)
                     @if (isset($_GET['tag']) && $_GET['tag'] == $tag->id)
                         <option selected value="{{ $tag->id }} ">{{ $tag->name }}</option>

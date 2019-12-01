@@ -91,7 +91,7 @@
                     </div>
                     <div class="col">
                         @foreach($tags as $tag)
-                            {{ $tag->name }}
+                            <a href="{{ route('tasks.index', ['tag' => $tag->id]) }}">{{ $tag->name }}</a>
                         @endforeach
                     </div>
                 </div>

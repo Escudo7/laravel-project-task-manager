@@ -59,12 +59,14 @@ class userControllerTest extends TestCase
     {
         $response = $this->get(route('users.index'));
         $response->assertStatus(200);
+        $response->assertSee($this->user->name);
     }
 
     public function testView()
     {
         $response = $this->get(route('users.show', $this->user));
         $response->assertStatus(200);
+        $response->assertSee($this->user->name);
     }
 
     public function testDestroy()

@@ -43,6 +43,7 @@ class TaskController extends Controller
                 }
             }, $query);
         }
+        
         $tasks = $query->paginate(10);
         return view('task.index', compact('tasks', 'users', 'tags', 'statuses'));
     }
