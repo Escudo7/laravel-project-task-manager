@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('header', 'редактирование профиля')
+@section('header')
+{{ __('users.edit.header', ['name' => $user->name]) }}
+@endsection
 
 @section('content')
     @if ($errors->any())
@@ -16,15 +18,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-secondary text-white text-center big-text">Заполните, пожалуйста, следующую форму</div>
+                <div class="card-header bg-secondary text-white text-center big-text">{{ __('Please fill in the following form') }}</div>
 
                 <div class="card-body">
                     {{ Form::model($user, [
                         'url' => route('users.update', $user),
                         'method' => 'PATCH']) }}
-                    @csrf
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">Login (псевдоним)</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Login (NicName)') }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $user->name }}" required autocomplete="name" autofocus>
@@ -35,7 +36,7 @@
                                     </span>
                                 @enderror
                                 <small id="nameHelpBlock" class="form-text text-muted">
-                                    Обязательное поле
+                                    {{ __('Required field') }}
                                 </small>
                             </div>
                         </div>
@@ -52,13 +53,13 @@
                                     </span>
                                 @enderror
                                 <small id="emailHelpBlock" class="form-text text-muted">
-                                    Обязательное поле
+                                    {{ __('Required field') }}е
                                 </small>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="firstname" class="col-md-4 col-form-label text-md-right">Имя</label>
+                            <label for="firstname" class="col-md-4 col-form-label text-md-right">{{ __('First name') }}</label>
 
                             <div class="col-md-6">
                                 <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname') ?? $user->firstname }}">
@@ -66,38 +67,37 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="lastname" class="col-md-4 col-form-label text-md-right">Фамилия</label>
+                            <label for="lastname" class="col-md-4 col-form-label text-md-right">{{ __('Last name') }}</label>
 
                             <div class="col-md-6">
                                 <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname') ?? $user->lastname }}">
                             </div>
                         </div>
 
-                        <fieldset class="form-group">
-                            <div class="row">
-                            <legend class="col-md-4 col-form-label text-md-right">Пол</legend>
+                        <div class="form-group row">
+                            <label for="sex" class="col-md-4 col-form-label text-md-right">{{ __('Sex') }}</label>
                             <div class="col-md-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="sex" id="sex1" value="мужской">
-                                    <label class="form-check-label" for="sex1">
-                                        Мужской
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sex" id="sex2" value="женский">
-                                    <label class="form-check-label" for="sex2">
-                                        Женский
-                                    </label>
-                                </div>
+                            <select class="form-control" id="sex" name="sex">
+                                <option value="">{{ __('not selected') }}</option>
+                                    @if ($user->sex == 'male')
+                                        <option selected value="male">{{ __('male') }}</option>
+                                        <option value="female">{{ __('female') }}</option>
+                                    @elseif ($user->sex == 'female')
+                                        <option value="male">{{ __('male') }}</option>
+                                        <option selected value="female">{{ __('female') }}</option>
+                                    @else
+                                        <option value="male">{{ __('male') }}</option>
+                                        <option value="female">{{ __('female') }}</option>
+                                    @endif
+                            </select>
                             </div>
-                            </div>
-                        </fieldset>
+                        </div>
 
                         <div class="form-group row">
-                            <label class="col-md-4 col-form-label text-md-right">Дата рождения</label>
+                            <label class="col-md-4 col-form-label text-md-right">{{ __('Birthday') }}</label>
 
                             <div class="col-md-2">
-                                <input id="birth_day" type="text" class="form-control" name="birth_day" value="{{ old('birth_day') ?? $user->birth_day }}" placeholder="День">
+                                <input id="birth_day" type="text" class="form-control" name="birth_day" value="{{ old('birth_day') ?? $user->birth_day }}" placeholder="{{ __('Day') }}">
                                 @error('birth_day')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -106,16 +106,16 @@
                                 
                             </div>
                             <div class="col-md-2">
-                                <input id="birth_month" type="text" class="form-control" name="birth_month" value="{{ old('birth_month') ?? $user->birth_month }}" placeholder="Месяц">
+                                <input id="birth_month" type="text" class="form-control" name="birth_month" value="{{ old('birth_month') ?? $user->birth_month }}" placeholder="{{ __('Month') }}">
                             </div>
                             <div class="col-md-2">
-                                <input id="birth_year" type="text" class="form-control" name="birth_year" value="{{ old('birth_year') ?? $user->birth_year }}" placeholder="Год">
+                                <input id="birth_year" type="text" class="form-control" name="birth_year" value="{{ old('birth_year') ?? $user->birth_year }}" placeholder="{{ __('Year') }}">
                             </div>
                         </div>
 
 
                         <div class="form-group row">
-                            <label for="country" class="col-md-4 col-form-label text-md-right">Страна</label>
+                            <label for="country" class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
 
                             <div class="col-md-6">
                                 <input id="country" type="text" class="form-control" name="country" value="{{ old('country') ?? $user->country }}">
@@ -123,7 +123,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="city" class="col-md-4 col-form-label text-md-right">Город</label>
+                            <label for="city" class="col-md-4 col-form-label text-md-right">{{ __('City') }}</label>
 
                             <div class="col-md-6">
                                 <input id="city" type="text" class="form-control" name="city" value="{{ old('city') ?? $user->city }}">
@@ -134,7 +134,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-secondary">
-                                    Сохранить изменения
+                                    {{ __('Save changes') }}
                                 </button>
                             </div>
                         </div>

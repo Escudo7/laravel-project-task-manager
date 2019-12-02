@@ -6,16 +6,16 @@
         </div>
         @if($task->description)
             <div>
-                Описание:
+                {{ __('Description') }}:
                 {{ $task->description }}
             </div>
         @endif
         <div>
-            Статус:
+            {{ __('Status') }}:
             {{ $task->status->name }}
         </div>
         <div>
-            Дата создания:
+            {{ __('Creation date') }}:
             {{ $task->created_at }}
         </div>
     </div>

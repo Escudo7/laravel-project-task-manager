@@ -8,10 +8,10 @@
     <table class="table table-hover table-bordered">
         <tr class="bg-secondary text-center text-white">
             <th>№</th>
-            <th>{{ __('users.index.nicname') }}</th>
-            <th>{{ __('users.index.first_name') }}</th>
-            <th>{{ __('users.index.last_name') }}</th>
-            <th>{{ __('users.index.registration_date') }}</th>
+            <th>{{ __('NicName') }}</th>
+            <th>{{ __('First name') }}</th>
+            <th>{{ __('Last name') }}</th>
+            <th>{{ __('Registration date') }}</th>
         </tr>
         @foreach($users as $user)
         <tr>

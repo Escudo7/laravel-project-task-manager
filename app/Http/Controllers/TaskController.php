@@ -102,8 +102,6 @@ class TaskController extends Controller
      */
     public function show(Request $request, Task $task)
     {
-        \App::setLocale('ru');
-        print_r(\App::getLocale());
         $message = [
             'success' => session('success'),
             'warning' => session('warning'),

@@ -49,13 +49,13 @@
         <div class="navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('start') }}">Home</a>
+                    <a class="nav-link" href="{{ route('start') }}">{{ __('Home') }}</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('users.index') }}">{{__('navigate.users')}}</a>
+                    <a class="nav-link" href="{{ route('users.index') }}">{{ __('Users') }}</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('tasks.index') }}">{{__('navigate.tasks')}}</a>
+                    <a class="nav-link" href="{{ route('tasks.index') }}">{{ __('Tasks') }}</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -69,17 +69,17 @@
             <ul class="navbar-nav ml-auto">
                 @guest
                 <li class="nav-item active">
-                     <a class="nav-link" href="{{ route('login') }}">Войти</a>
+                     <a class="nav-link" href="{{ route('login') }}">{{ __('Log in') }}</a>
                 </li>
                 @if (Route::has('register'))
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
+                    <a class="nav-link" href="{{ route('register') }}">{{ __('Registration') }}</a>
                 </li>
                 @endif
                 @else
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ route('logout') }}" data-method="POST">
-                        Выйти
+                        {{ __('Log out') }}
                     </a>
                 </li>
                 <li class="nav-item active">

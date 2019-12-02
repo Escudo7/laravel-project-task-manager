@@ -72,7 +72,7 @@ class UserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'sex' => [Rule::in(['мужской', 'женский']), 'nullable'],
+            'sex' => [Rule::in(['male', 'female']), 'nullable'],
             'birth_day' => ['integer', 'min:1', 'max:31', 'nullable'],
             'birth_month' => ['integer', 'min:1', 'max:12', 'nullable'],
             'birth_year' => ['integer', 'min:1930', 'max:2015', 'nullable'],

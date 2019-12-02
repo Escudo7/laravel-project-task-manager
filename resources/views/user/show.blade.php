@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-    Профиль пользователя {{ $user->name }}
+    {{ __('users.show.header', ['name' => $user->name]) }}
 @endsection
 
 @section('content')
@@ -11,11 +11,7 @@
             <div class="card border-danger">
                 <div class="card-body">
                     <p>
-                        Для простмотра профиля {{ $user->name }}, пожалуйста, пройдите процедуру 
-                        <a href="{{ route('register') }}">регистрации</a>
-                        или 
-                        <a href="{{ route('login') }}">войдите</a>
-                        в свой профиль
+                        {!! trans('users.show.no_auth', ['name' => $user->name]) !!}
                     </p>
                 </div>
             </div>
@@ -27,12 +23,12 @@
         <div class="col">
             <div class="card">
                 <div class="card-header bg-secondary text-white text-center big-text">
-                    {{ __('users.show.information') }}
+                    {{ __('Registration information') }}
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <p>Псевдоним</p>
+                            <p>{{ __('NicName') }}</p>
                         </div>
                         <div class="col">
                             <p>{{ $user->name }}</p>
@@ -41,7 +37,7 @@
                     @if($user->firstname)
                         <div class="row">
                             <div class="col">
-                                <p>Имя</p>
+                                <p>{{ __('First name') }}</p>
                             </div>
                             <div class="col">
                                 <p>{{ $user->firstname }}</p>
@@ -51,7 +47,7 @@
                     @if($user->lastname)
                         <div class="row">
                             <div class="col">
-                                <p>Фамилия</p>
+                                <p>{{ __('Last name') }}</p>
                             </div>
                             <div class="col">
                                 <p>{{ $user->lastname }}</p>
@@ -71,17 +67,17 @@
                     @if($user->sex)
                         <div class="row">
                             <div class="col">
-                                <p>Пол</p>
+                                <p>{{ __('Sex') }}</p>
                             </div>
                             <div class="col">
-                                <p>{{ $user->sex }}</p>
+                                <p>{{ $user->sex == 'male' ? __('male') : __('female') }}</p>
                             </div>
                         </div>
                     @endif
                     @if ($user->birth_day && $user->birth_month && $user->birth_year)
                         <div class="row">
                             <div class="col">
-                                <p>Дата рождения</p>
+                                <p>{{ __('Birthday') }}</p>
                             </div>
                             <div class="col">
                                 <p>
@@ -93,7 +89,7 @@
                     @if($user->country)
                         <div class="row">
                             <div class="col">
-                                <p>Страна</p>
+                                <p>{{ __('Country') }}</p>
                             </div>
                             <div class="col">
                                 <p>{{ $user->country }}</p>
@@ -103,7 +99,7 @@
                     @if($user->city)
                         <div class="row">
                             <div class="col">
-                                <p>Город</p>
+                                <p>{{ __('City') }}</p>
                             </div>
                             <div class="col">
                                 <p>{{ $user->city }}</p>
@@ -112,7 +108,7 @@
                     @endif
                     <div class="row">
                         <div class="col">
-                            <p>Дата регистрации</p>
+                            <p>{{ __('Registration date') }}</p>
                         </div>
                         <div class="col">
                             <p>{{ $user->created_at }}</p>
@@ -124,27 +120,27 @@
         <div class="col">
             <div class="card border-light">
                 <div class="card-header bg-secondary text-white text-center big-text">
-                    Созданные задачи
+                    {{__('Created tasks')}}
                 </div>
                 <div class="card-body p-1">
                     @foreach($user->createdTasks as $task)
                         @include('user.cardTaskInProfile')
                     @endforeach
                     @if(sizeof($user->createdTasks) == 0)
-                        <p class="m-2">Задачи не создавались</p>
+                        <p class="m-2">{{ __('No tasks') }}</p>
                     @endif
                 </div>
             </div>
             <div class="card border-light">
                 <div class="card-header bg-secondary text-white text-center big-text">
-                    Задачи на выполнении
+                    {{ __('Assigned tasks') }}
                 </div>
                 <div class="card-body p-1">
                     @foreach($user->assignedTasks as $task)
                         @include('user.cardTaskInProfile')
                     @endforeach
                     @if(sizeof($user->assignedTasks) == 0)
-                        <p class="m-2">Отсутствуют</p>
+                        <p class="m-2">{{ __('No tasks') }}</p>
                     @endif
                 </div>
             </div>
@@ -153,20 +149,20 @@
             <div class="col-sm-3">
                 <div class="card">
                     <div class="card-header bg-secondary text-white text-center big-text">
-                        Функции
+                        {{ __('Function') }}
                     </div>
                     <div class="card-body pl-5">
                         <div class="row">
-                            <a href="{{ route('tasks.create') }}" class='text-dark'>Создать задачу</a>
+                            <a href="{{ route('tasks.create') }}" class='text-dark'>{{ __('Create new task') }}</a>
                         </div>
                         <div class="row">
-                            <a href="{{ route('users.edit_password', $user) }}" class='text-dark'>Изменить пароль</a>
+                            <a href="{{ route('users.edit_password', $user) }}" class='text-dark'>{{ __('Chenge password') }}</a>
                         </div>
                         <div class="row">
-                            <a href="{{ route('users.edit', $user) }}" class='text-dark'>Редактировать профиль</a>
+                            <a href="{{ route('users.edit', $user) }}" class='text-dark'>{{ __('Edit profile') }}</a>
                         </div>
                         <div class="row">
-                            <a href="{{ route('users.destroy', $user) }}" data-confirm="Вы уверены?" data-method="delete" class='text-dark'>Удалить профиль</a>
+                            <a href="{{ route('users.destroy', $user) }}" data-confirm="{{ __('Are you sure?') }}" data-method="delete" class='text-dark'>{{ __('Delete profile') }}</a>
                         </div>
                     </div>
                 </div>

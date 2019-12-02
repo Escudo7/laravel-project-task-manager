@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('header', 'список задач')
+@section('header')
+{{ __('Tasks list') }}
+@endsection
 
 @section('content')
 <div class='col'>
@@ -14,7 +16,7 @@
     {{ Form::hidden('filter[myTasks]', true) }}
     <div class="form-group col-md-3 pl-3 my-2">
             <button type="submit" class="btn botton-color text-white btn-block">
-                Мои задачи
+                {{ __('My tasks') }}
             </button>
     </div>
 {{ Form::close() }}
@@ -27,9 +29,9 @@
 
     <div class="form-row">
         <div class="form-group col-md-3 pl-4 pr-2 my-2">
-            <label for="creator">Создатель задачи</label>
+            <label for="creator">{{ __('Creator') }}</label>
             <select class="form-control" id="creator" name="creator">
-                <option value="">не выбран</option>
+                <option value="">{{ __('not selected') }}</option>
                 @foreach($users as $user)
                     @if (isset($_GET['creator']) && $_GET['creator'] == $user->id)
                         <option selected value="{{ $user->id }}">{{ $user->name }}</option>
@@ -41,9 +43,9 @@
         </div>
 
         <div class="form-group col-md-3 my-2">
-            <label for="executor">Исполнитель</label>
+            <label for="executor">{{ __('Executor') }}</label>
             <select class="form-control" id="executor" name="executor">
-                <option value="">не выбран</option>
+                <option value="">{{ __('not selected') }}</option>
                 @foreach($users as $user)
                     @if (isset($_GET['executor']) && $_GET['executor'] == $user->id)
                         <option selected value="{{ $user->id }} ">{{ $user->name }}</option>
@@ -55,9 +57,9 @@
         </div>
 
         <div class="form-group col-md-3 my-2">
-            <label for="status">Статус</label>
+            <label for="status">{{ __('Status') }}</label>
             <select class="form-control" id="status" name="status">
-                <option value="">не выбран</option>
+                <option value="">{{ __('not selected') }}</option>
                 @foreach($statuses as $status)
                     @if (isset($_GET['status']) && $_GET['status'] == $status->id)
                         <option selected value="{{ $status->id }} ">{{ $status->name }}</option>
@@ -69,9 +71,9 @@
         </div>
 
         <div class="form-group col-md-3 pr-4 my-2">
-            <label for="tag">Тег</label>
+            <label for="tag">{{ __('Tag') }}</label>
             <select class="form-control" id="tag" name="tag">
-                <option value="">не выбран</option>
+                <option value="">{{ __('not selected') }}</option>
                 @foreach($tags as $tag)
                     @if (isset($_GET['tag']) && $_GET['tag'] == $tag->id)
                         <option selected value="{{ $tag->id }} ">{{ $tag->name }}</option>
@@ -86,12 +88,12 @@
     <div class="form-row mr-3">
         <div class="form-group col-md-3 pl-4 my-2">
             <button type="submit" class="btn botton-color text-white btn-block">
-                Применить фильтр
+                {{ __('Apply filter')}}
             </button>
         </div>
 
         <div class="btn botton-color text-white m-2 col-md-3 pb-1">
-            <a href="{{ route('tasks.index') }}" class="text-white">Удалить все фильтры</a>
+            <a href="{{ route('tasks.index') }}" class="text-white">{{ __('Remove all filters')}}</a>
         </div>
     </div>
 
@@ -102,11 +104,11 @@
     <table class="table table-hover table-bordered">
         <tr class="bg-secondary text-center text-white">
             <th>№</th>
-            <th>Имя</th>
-            <th>Создатель</th>
-            <th>Ответственный</th>
-            <th>Статус</th>
-            <th>Дата создания</th>
+            <th>{{ __('Name') }}</th>
+            <th>{{ __('Creator') }}</th>
+            <th>{{ __('Executor') }}</th>
+            <th>{{ __('Status') }}</th>
+            <th>{{ __('Creation date')}}</th>
         </tr>
         @foreach($tasks as $task)
         <tr>
@@ -123,7 +125,7 @@
                         {{ $task->assignedTo->name }}
                     </a>
                 @else 
-                    не назначен
+                     {{ __('not assigned') }}
                 @endif
             </td>
             <td class="{{ $task->status->id == 4 ? 'text-success' : '' }}">
@@ -138,10 +140,10 @@
     </div>
     @if(Auth::check())
         <div class="btn btn-secondary ml-3 mt-3">
-            <a href="{{ route('tasks.create') }}" class="text-white">Создать новую задачу</a>
+            <a href="{{ route('tasks.create') }}" class="text-white">{{ __('Create new task') }}</a>
         </div>
         <div class="btn btn-secondary ml-3 mt-3">
-            <a href="{{ route('task_statuses.index') }}" class="text-white">Список статусов задач</a>
+            <a href="{{ route('task_statuses.index') }}" class="text-white">{{ __('List of task statuses') }}</a>
         </div>
     @endif
 @endsection
