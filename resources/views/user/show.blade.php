@@ -27,7 +27,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header bg-secondary text-white text-center big-text">
-                    Регистрационная информация
+                    {{ __('users.show.information') }}
                 </div>
                 <div class="card-body">
                     <div class="row">

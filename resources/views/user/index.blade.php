@@ -1,15 +1,17 @@
 @extends('layouts.app')
 
-@section('header', 'Список пользователей')
+@section('header')
+{{ __('users.index.header') }}
+@endsection
 
 @section('content')
     <table class="table table-hover table-bordered">
         <tr class="bg-secondary text-center text-white">
             <th>№</th>
-            <th>Псевдоним</th>
-            <th>Имя</th>
-            <th>Фамилия</th>
-            <th>Дата регистрации</th>
+            <th>{{ __('users.index.nicname') }}</th>
+            <th>{{ __('users.index.first_name') }}</th>
+            <th>{{ __('users.index.last_name') }}</th>
+            <th>{{ __('users.index.registration_date') }}</th>
         </tr>
         @foreach($users as $user)
         <tr>

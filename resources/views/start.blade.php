@@ -3,9 +3,9 @@
 
 @section('content')
     <div class="jumbotron">
-        <p class="lead">Добро пожаловать в проект упавления задачами "Task Manadger"!</p>
+        <h1 class="text-center" style="font-size: 1.6rem;">{{ __('start.title') }}</h1>
+        <p class="lead text-center">{!! trans('start.about_project') !!}</p>
         <hr class="my-4">
-        <p>"Task Manadger" создан в качестве учебного проекта на фреймворке Laravel.</p>
         <p>Для участия в проекте перейдите на страницу регистрации.</p>
     </div>
 @endsection

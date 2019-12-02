@@ -52,10 +52,18 @@
                     <a class="nav-link" href="{{ route('start') }}">Home</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('users.index') }}">Пользователи</a>
+                    <a class="nav-link" href="{{ route('users.index') }}">{{__('navigate.users')}}</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('tasks.index') }}">Задачи</a>
+                    <a class="nav-link" href="{{ route('tasks.index') }}">{{__('navigate.tasks')}}</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lang/en">En</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/lang/ru">Ru</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -70,14 +78,9 @@
                 @endif
                 @else
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
+                    <a class="nav-link" href="{{ route('logout') }}" data-method="POST">
                         Выйти
                     </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                    </form>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ route('users.show', Auth::user()->id) }}">

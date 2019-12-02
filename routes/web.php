@@ -41,3 +41,5 @@ Route::resource('tasks', 'TaskController', ['except' => ['destroy']]);
 Route::resource('users.comments', 'UserCommentController', ['only' => ['store']]);
 
 Route::resource('task_statuses', 'TaskStatusController', ['except' => ['show']]);
+
+Route::resource('lang/{locale}', 'LocalizationController', ['only' => ['index']]);

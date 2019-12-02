@@ -91,7 +91,8 @@ class TaskController extends Controller
             $newTag->save();
             $task->tags()->attach($newTag);
         }
-        session()->flash('success','Задача успешно создана');
+        //session()->flash('success','Задача успешно создана');
+        session()->flash('success','Task was created successfully');
         return redirect()->route('tasks.show', $task);
     }
 
@@ -104,6 +105,8 @@ class TaskController extends Controller
      */
     public function show(Request $request, Task $task)
     {
+        \App::setLocale('ru');
+        print_r(\App::getLocale());
         $message = [
             'success' => session('success'),
             'warning' => session('warning'),
@@ -124,6 +127,7 @@ class TaskController extends Controller
      */
     public function edit(Request $request, Task $task)
     {
+        print_r(\App::getLocale());
         if ($request->user() != $task->creator && $request->user() != $task->assignedTo) {
             session()->flash('error','У Вас недостаточно полномочий для выполнения этих действий');
             return redirect()->route('tasks.show', $task);
