@@ -15,9 +15,7 @@ class TaskController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        //print_r($_GET);
-        
+    {    
         $users = \App\User::all();
         $tags = \App\Tag::all();
         $statuses = \App\TaskStatus::all();
@@ -91,7 +89,6 @@ class TaskController extends Controller
             $newTag->save();
             $task->tags()->attach($newTag);
         }
-        //session()->flash('success','Задача успешно создана');
         session()->flash('success','Task was created successfully');
         return redirect()->route('tasks.show', $task);
     }
@@ -127,7 +124,6 @@ class TaskController extends Controller
      */
     public function edit(Request $request, Task $task)
     {
-        print_r(\App::getLocale());
         if ($request->user() != $task->creator && $request->user() != $task->assignedTo) {
             session()->flash('error','У Вас недостаточно полномочий для выполнения этих действий');
             return redirect()->route('tasks.show', $task);

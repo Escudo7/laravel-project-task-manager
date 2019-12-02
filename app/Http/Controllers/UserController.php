@@ -64,11 +64,7 @@ class UserController extends Controller
      */
 
     public function update(Request $request, User $user)
-    {
-        //print_r($request->user()->id);
-        //print_r("\n");
-        //print_r($user->id);
-        
+    {      
         if ($request->user() != $user) {
             session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
             return redirect()->route('start');
