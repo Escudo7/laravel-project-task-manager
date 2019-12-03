@@ -1,13 +1,11 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/563d5b6c222a77be8e34/maintainability)](https://codeclimate.com/github/Escudo7/php-project-lvl4/maintainability)
 [![Build Status](https://travis-ci.com/Escudo7/php-project-lvl4.svg?branch=master)](https://travis-ci.com/Escudo7/php-project-lvl4)
 
-https://http://the-best-task-manager.herokuapp.com/
+http://the-best-task-manager.herokuapp.com/
 
 Task Manager создан в качестве учебного проекта на фреймворке Laravel.
 
-Task Manager - проект для управления задачами и совместного их выполнения.
-
-Task Manager поможет Вам создавать новые задачи, назначать исполнителей, самому брать уже созданные задачи на исполнение.
+Task Manager - проект для управления задачами и совместного их выполнения. Он поможет Вам создавать новые задачи, назначать исполнителей, самому брать уже созданные задачи на исполнение.
 
 Список текущих задач доступен на соответствующей странице, так же как и перечень участвующих в проекте пользователей. Ссылки на данные страницы имеются на навигационной панели, рассположенной вверху кажной страницы.
 
