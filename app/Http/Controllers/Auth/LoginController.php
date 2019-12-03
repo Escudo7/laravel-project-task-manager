@@ -22,7 +22,7 @@ class LoginController extends Controller
 
     protected function redirectTo()
     {
-        session()->flash('success', 'Вы были успешно авторизованы!');
+        session()->flash('success', __('You have been successfully logged in!'));
         return '/';
     }
     
@@ -44,7 +44,7 @@ class LoginController extends Controller
     public function logout()
     {
         \Auth::logout();
-        session()->flash('warning', 'Вы вышли из системы');
+        session()->flash('warning', __('You are logged out'));
         return redirect()->route('start');
     }
 }

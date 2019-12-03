@@ -53,7 +53,7 @@ class TaskStatusController extends Controller
         $taskStatus = new TaskStatus();
         $taskStatus->fill($request->all());
         $taskStatus->save();
-        session()->flash('success','Статус успешно добавлен!');
+        session()->flash('success', __('Status successfully added!'));
         return redirect()->route('task_statuses.index');
     }
 
@@ -82,7 +82,7 @@ class TaskStatusController extends Controller
         ]);
         $taskStatus->fill($request->all());
         $taskStatus->save();
-        session()->flash('success', 'Статус был успешно изменен!');
+        session()->flash('success', __('Status has been successfully changed!'));
         return redirect()->route('task_statuses.index');
     }
 
@@ -95,11 +95,11 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus)
     {
         if (sizeof($taskStatus->tasks) > 0) {
-            session()->flash('error', 'Нельзя удалить статус, который присвоен существующим задачам');
+            session()->flash('error', __('You cannot delete the status that is assigned to existing tasks'));
             return redirect()->route('task_statuses.index');
         }
         $taskStatus->delete();
-        session()->flash('warning', 'Статус был удален');
+        session()->flash('warning', __('Status has been deleted'));
         return redirect()->route('task_statuses.index');
     }
 }

@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = \App\User::paginate(10);
+        $users = User::orderBy('id')->paginate(10);
         return view('user.index', compact('users'));
     }
 
@@ -49,7 +49,7 @@ class UserController extends Controller
     public function edit(Request $request, User $user)
     {
         if ($request->user() != $user) {
-            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('start');
         }
         return view('user.edit', compact('user'));
@@ -66,7 +66,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {      
         if ($request->user() != $user) {
-            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('start');
         }
         $request->validate([
@@ -81,7 +81,7 @@ class UserController extends Controller
         ]);
         $user->fill($request->all());
         $user->save();
-        session()->flash('success','Ваш профиль был успешно изменен!');
+        session()->flash('success', __('Your profile has been successfully modified!'));
         return redirect()->route('users.show', $user);
     }
 
@@ -95,7 +95,7 @@ class UserController extends Controller
     public function destroy(Request $request, User $user)
     {
         if ($request->user() != $user) {
-            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('start');
         }
         foreach ($user->assignedTasks as $task) {
@@ -103,7 +103,7 @@ class UserController extends Controller
             $task->save();
         }
         $user->delete();
-        session()->flash('warning','Ваш профиль был удален');
+        session()->flash('warning', __('Your profile has been deleted'));
         return redirect()->route('start');
     }
 
@@ -117,7 +117,7 @@ class UserController extends Controller
     public function edit_password(Request $request, User $user)
     {
         if ($request->user() != $user) {
-            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('start');
         }
         return view('user.edit_password', compact('user'));
@@ -133,7 +133,7 @@ class UserController extends Controller
     public function update_password(Request $request, User $user)
     {
         if ($request->user() != $user) {
-            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('start');
         }
         $request->validate([
@@ -141,7 +141,7 @@ class UserController extends Controller
         ]);
         $user->password = Hash::make($request['password']);
         $user->save();
-        session()->flash('success','Ваш пароль был успешно изменен');
+        session()->flash('success', __('Your password has been successfully changed'));
         return redirect()->route('users.show', $user);
     }
 }

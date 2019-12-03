@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('header', 'просмотр задачи')
+@section('header')
+{{ __('View task') }}
+@endsection
 
 @section('content')
 @if ($errors->any())
@@ -16,12 +18,12 @@
     <div class="col">
         <div class="card">
             <div class="card-header bg-secondary text-white text-center big-text">
-                Задача
+                {{ __('Task') }}
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <p>Название</p>
+                        <p>{{ __('Name') }}</p>
                     </div>
                     <div class="col">
                         <p>{{ $task->name }}</p>
@@ -29,7 +31,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <p>Описание</p>
+                        <p>{{ __('Description') }}</p>
                     </div>
                     <div class="col">
                         <p>{{ $task->description ?? '--' }}</p>
@@ -37,7 +39,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <p>Статус</p>
+                        <p>{{ __('Status') }}</p>
                     </div>
                     <div class="col {{ $task->status_id == 4 ? 'text-success' : '' }}">
                         <p>{{ $task->status->name }}</p>
@@ -45,7 +47,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <p>Создатель</p>
+                        <p>{{ __('Creator') }}</p>
                     </div>
                     <div class="col">
                         <p>
@@ -57,7 +59,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <p>Ответственный</p>
+                        <p>{{ __('Executor') }}</p>
                     </div>
                     <div class="col">
                         <p>
@@ -67,17 +69,17 @@
                                 </a>
                                 @if($currentUser == $task->assignedTo)
                                     <div class="btn btn-secondary">
-                                        <a href="{{ route('tasks.deny_task', $task) }}" data-method="PATCH" class="text-white">
-                                            Отказаться от задачи
+                                        <a href="{{ route('tasks.abandon_task', $task) }}" data-method="PATCH" class="text-white">
+                                            {{ __('Abandon task') }}
                                         </a>
                                     </div>
                                 @endif
                             @else
-                                не назначен
+                                {{ __('not assigned') }}
                                 @auth
                                     <div class="btn btn-secondary">
                                         <a href="{{ route('tasks.get_task', $task) }}" data-method="PATCH" class="text-white">
-                                            Забрать задачу
+                                            {{ __('Get task') }}
                                         </a>
                                     </div>
                                 @endauth
@@ -87,7 +89,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <p>Теги</p>
+                        <p>{{ __('Tags') }}</p>
                     </div>
                     <div class="col">
                         @foreach($tags as $tag)
@@ -98,7 +100,7 @@
                 @if($currentUser == $task->creator || $currentUser == $task->assignedTo)
                     <div class="btn btn-secondary">
                         <a href="{{ route('tasks.edit', $task) }}" class="text-white">
-                            Изменить задачу
+                            {{ __('Chenge task') }}
                         </a>
                     </div>
                 @endif
@@ -109,18 +111,18 @@
         @if(sizeof($task->comments) > 0)
         <div class="card border-light">
             <div class="card-header bg-secondary text-white text-center big-text">
-                Комментарии
+                {{ __('Comments') }}
             </div>
             <div class="card-body p-0">
                 @foreach($task->comments()->orderBy('created_at')->get() as $comment)
                 <div class="card my-2">
                     <div class="card-body">
                         <div>
-                            Дата:
+                            {{ __('Date') }}:
                             {{ $comment->created_at }}
                         </div>
                         <div>
-                            Автор
+                            {{ __('Author') }}
                             <a href="{{ $comment->creator->trashed() ? '' : route('users.show', $comment->creator) }}">
                                 {{ $comment->creator->name }}
                             </a>
@@ -137,7 +139,7 @@
         @auth
         <div class="card border-light">
             <div class="card-header bg-secondary text-white text-center big-text">
-                Добавить новый комментарий
+                {{ __('Add new comment') }}
             </div>
             <div class="card-body">
                 {{ Form::model($comment, [
@@ -149,8 +151,8 @@
                     </div>
                     <input type="hidden" name="task_id" id="task_id" value="{{ $task->id }}">
                     <div class="form-group row">
-                        <button type="submit" class="btn btn-secondary">
-                            Сохранить
+                        <button type="submit" class="btn btn-secondary col-sm-3">
+                            {{ __('Save') }}
                         </button>
                     </div>
                 {{ Form::close()}}

@@ -33,8 +33,8 @@ Route::resource('users', 'UserController', ['except' => ['create', 'store']]);
 Route::patch('tasks/{task}/get_task', 'TaskController@get_task')
     ->name('tasks.get_task');
 
-Route::patch('tasks/{task}/deny_task', 'TaskController@deny_task')
-    ->name('tasks.deny_task');
+Route::patch('tasks/{task}/abandon_task', 'TaskController@abandon_task')
+    ->name('tasks.abandon_task');
 
 Route::resource('tasks', 'TaskController', ['except' => ['destroy']]);
 

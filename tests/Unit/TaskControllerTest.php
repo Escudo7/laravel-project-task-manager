@@ -77,14 +77,14 @@ class TaskControllerTest extends TestCase
         $this->assertEquals(1, Task::find(1)->assignedTo_id);
     }
 
-    public function testDenyTask()
+    public function testAbandonTask()
     {
         $task =Task::find(1);
         $task->assignedTo_id = 1;
         $task->save();
         $this->assertEquals(1, Task::find(1)->assignedTo_id);
         $this->actingAs(User::first())
-            ->patch(route('tasks.deny_task', Task::find(1)));
+            ->patch(route('tasks.abandon_task', Task::find(1)));
         $this->assertNotEquals(1, Task::find(1)->assignedTo_id);
     }
 }

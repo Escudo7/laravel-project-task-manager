@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use App\User;
+use App\Tag;
+use App\TaskStatus;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -16,28 +18,28 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {    
-        $users = \App\User::all();
-        $tags = \App\Tag::all();
-        $statuses = \App\TaskStatus::all();
+        $users = User::all();
+        $tags = Tag::all();
+        $statuses = TaskStatus::all();
 
         $query = Task::orderBy('id');
-        $date = $request->all();
+        $data = $request->all();
         if (isset($date['filter']['myTasks'])) {
             $query = $query->myTasks($request->user()->id);
         } else {
-            $query = array_reduce(array_keys($date), function($acc, $key) use ($date) {
-                if(!isset($date[$key])) {
+            $query = array_reduce(array_keys($data), function($acc, $key) use ($data) {
+                if(!isset($data[$key])) {
                     return $acc;
                 }
                 switch($key) {
                     case 'creator':
-                        return $acc->creator($date[$key]);
+                        return $acc->creator($data[$key]);
                     case 'executor':
-                        return $acc->executor($date[$key]);
+                        return $acc->executor($data[$key]);
                     case 'status' :
-                        return $acc->status($date[$key]);
+                        return $acc->status($data[$key]);
                     case 'tag' :
-                        return $acc->tag($date[$key]);
+                        return $acc->tag($data[$key]);
                 }
             }, $query);
         }
@@ -54,8 +56,8 @@ class TaskController extends Controller
     public function create()
     {
         $task = new Task();
-        $users = \App\User::all();
-        $tags = \App\Tag::all();
+        $users = User::all();
+        $tags = Tag::all();
         return view('task.create', compact('task', 'users', 'tags'));
     }
 
@@ -68,7 +70,7 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         if (!\Auth::check()) {
-            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            session()->flash('error', __('You must be logged in to perform this action'));
             return redirect()->route('start');
         }
         $request->validate([
@@ -85,11 +87,10 @@ class TaskController extends Controller
             $task->tags()->sync($request['tags']);
         }
         if ($request['newTag']) {
-            $newTag = new \App\Tag(['name' => $request['newTag']]);
-            $newTag->save();
+            $newTag = Tag::create(['name' => $request['newTag']]);
             $task->tags()->attach($newTag);
         }
-        session()->flash('success','Task was created successfully');
+        session()->flash('success', __('Task was created successfully'));
         return redirect()->route('tasks.show', $task);
     }
 
@@ -123,12 +124,12 @@ class TaskController extends Controller
     public function edit(Request $request, Task $task)
     {
         if ($request->user() != $task->creator && $request->user() != $task->assignedTo) {
-            session()->flash('error','У Вас недостаточно полномочий для выполнения этих действий');
+            session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('tasks.show', $task);
         }
-        $users = \App\User::all();
-        $statuses = \App\TaskStatus::all();
-        $tags = \App\Tag::all();
+        $users = User::all();
+        $statuses = TaskStatus::all();
+        $tags = Tag::all();
         return view('task.edit', compact('task', 'users', 'statuses', 'tags'));
     }
 
@@ -142,7 +143,7 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         if ($request->user() != $task->creator && $request->user() != $task->assignedTo) {
-            session()->flash('error','У Вас недостаточно полномочий для выполнения этих действий');
+            session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('tasks.show', $task);
         }
         $request->validate([
@@ -159,12 +160,11 @@ class TaskController extends Controller
             $task->tags()->sync($request['tags']);
         }
         if ($request['newTag']) {
-            $newTag = new \App\Tag(['name' => $request['newTag']]);
-            $newTag->save();
+            $newTag = Tag::create(['name' => $request['newTag']]);
             $task->tags()->attach($newTag);
         }
         $task->save();
-        session()->flash('success','Задача была изменена');
+        session()->flash('success', __('Task has been changed'));
         return redirect()->route('tasks.show', $task);
     }
 
@@ -178,13 +178,17 @@ class TaskController extends Controller
     public function get_task(Request $request, Task $task)
     {
         if (!\Auth::check()) {
-            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
+            session()->flash('error', __('You must be logged in to perform this action'));
             return redirect()->route('start');
+        }
+        if ($task->assignedTo != null) {
+            session()->flash('error', __('Task already has executor'));
+            return redirect()->route('tasks.show', $task);
         }
         $task->assignedTo()->associate($request->user());
         $task->status_id = 2;
         $task->save();
-        session()->flash('success','Вы успешно взяли задачу!');
+        session()->flash('success', __('You have successfully taken the task!'));
         return redirect()->route('tasks.show', $task);
     }
 
@@ -195,16 +199,16 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function deny_task(Request $request, Task $task)
+    public function abandon_task(Request $request, Task $task)
     {
-        if (!\Auth::check()) {
-            session()->flash('error', 'У Вас недостаточно полномочий для выполнения этих действий');
-            return redirect()->route('start');
+        if ($request->user() != $task->assignedTo) {
+            session()->flash('error', __('You do not have enough authority to perform these actions'));
+            return redirect()->route('tasks.show', $task);
         }
         $task->assignedTo()->dissociate();
         $task->status_id = 1;
         $task->save();
-        session()->flash('warning','Вы отказались от задачи');
+        session()->flash('warning', __('You abandoned task'));
         return redirect()->route('tasks.show', $task);
     }
 }

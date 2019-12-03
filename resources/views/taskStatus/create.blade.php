@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('header', 'создание нового статуса задачи')
+@section('header')
+{{ __('Creating new task status') }}
+@endsection
 
 @section('content')
 @if ($errors->any())
@@ -16,7 +18,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-secondary text-white text-center big-text">Введите новый статус</div>
+                <div class="card-header bg-secondary text-white text-center big-text">{{ __('Enter new status') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('task_statuses.store') }}">
@@ -25,11 +27,9 @@
                             <div class="col">
                                 <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required>
                             </div>
-                            <div class="col-md-3">
-                                <button type="submit" class="btn botton-color text-white">
-                                    Создать
-                                </button>
-                            </div>
+                            <button type="submit" class="btn botton-color text-white col-md-3">
+                                {{ __('Create') }}
+                            </button>
                         </div>
                     </form>
                 </div>

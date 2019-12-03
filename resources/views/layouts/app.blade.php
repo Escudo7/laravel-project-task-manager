@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="csrf-param" content="_token" />
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Task Manager</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -46,7 +46,10 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="{{ route('start') }}">Task Manager</a>
-        <div class="navbar-collapse" id="navbarNavDropdown">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ route('start') }}">{{ __('Home') }}</a>
@@ -65,8 +68,6 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/lang/ru">Ru</a>
                 </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
                 @guest
                 <li class="nav-item active">
                      <a class="nav-link" href="{{ route('login') }}">{{ __('Log in') }}</a>

@@ -36,7 +36,7 @@ class RegisterController extends Controller
 
     protected function redirectTo()
     {
-        session()->flash('success','Вы были успешно зарегистрированы!');
+        session()->flash('success', __('You have been successfully registered!'));
         return '/';
     }
 

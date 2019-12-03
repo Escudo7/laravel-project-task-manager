@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('header', 'Форма регистрации')
+@section('header')
+{{ __('Registration') }}
+@endsection
 
 @section('content')
     @if ($errors->any())
@@ -16,14 +18,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-secondary text-white text-center big-text">Заполните, пожалуйста, следующую форму</div>
+                <div class="card-header bg-secondary text-white text-center big-text">{{ __('Please fill in the following form') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">Login (псевдоним)</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Login (NicName)') }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -34,7 +36,7 @@
                                     </span>
                                 @enderror
                                 <small id="nameHelpBlock" class="form-text text-muted">
-                                    Обязательное поле
+                                    {{ __('Required field') }}
                                 </small>
                             </div>
                         </div>
@@ -51,13 +53,13 @@
                                     </span>
                                 @enderror
                                 <small id="emailHelpBlock" class="form-text text-muted">
-                                    Обязательное поле
+                                    {{ __('Required field') }}
                                 </small>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">Пароль</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -68,24 +70,24 @@
                                     </span>
                                 @enderror
                                 <small id="passwordHelpBlock" class="form-text text-muted">
-                                    Обязательное поле. Ваш пароль должен состоять не менее чем из 8 символов
+                                    {{ __('Your password must be at least 8 characters long') }}
                                 </small>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Подтверждение пароля</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirmation password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                 <small id="nameHelpBlock" class="form-text text-muted">
-                                    Обязательное поле
+                                    {{ __('Required field') }}
                                 </small>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="firstname" class="col-md-4 col-form-label text-md-right">Имя</label>
+                            <label for="firstname" class="col-md-4 col-form-label text-md-right">{{ __('First name') }}</label>
 
                             <div class="col-md-6">
                                 <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}">
@@ -93,7 +95,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="lastname" class="col-md-4 col-form-label text-md-right">Фамилия</label>
+                            <label for="lastname" class="col-md-4 col-form-label text-md-right">{{ __('Last name') }}</label>
 
                             <div class="col-md-6">
                                 <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname') }}">
@@ -112,22 +114,22 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-4 col-form-label text-md-right">Дата рождения</label>
+                            <label class="col-md-4 col-form-label text-md-right">{{ __('Birthday') }}</label>
 
                             <div class="col-md-2">
-                                <input id="birth_day" type="text" class="form-control" name="birth_day" value="{{ old('birth_day') }}" placeholder="День">
+                                <input id="birth_day" type="text" class="form-control" name="birth_day" value="{{ old('birth_day') }}" placeholder="{{ __('Day') }}">
                             </div>
                             <div class="col-md-2">
-                                <input id="birth_month" type="text" class="form-control" name="birth_month" value="{{ old('birth_month') }}" placeholder="Месяц">
+                                <input id="birth_month" type="text" class="form-control" name="birth_month" value="{{ old('birth_month') }}" placeholder="{{ __('Month') }}">
                             </div>
                             <div class="col-md-2">
-                                <input id="birth_year" type="text" class="form-control" name="birth_year" value="{{ old('birth_year') }}" placeholder="Год">
+                                <input id="birth_year" type="text" class="form-control" name="birth_year" value="{{ old('birth_year') }}" placeholder="{{ __('Year') }}">
                             </div>
                         </div>
 
 
                         <div class="form-group row">
-                            <label for="country" class="col-md-4 col-form-label text-md-right">Страна</label>
+                            <label for="country" class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
 
                             <div class="col-md-6">
                                 <input id="country" type="text" class="form-control" name="country" value="{{ old('country') }}">
@@ -135,18 +137,17 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="city" class="col-md-4 col-form-label text-md-right">Город</label>
+                            <label for="city" class="col-md-4 col-form-label text-md-right">{{ __('City') }}</label>
 
                             <div class="col-md-6">
                                 <input id="city" type="text" class="form-control" name="city" value="{{ old('city') }}">
                             </div>
                         </div>
 
-
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-secondary">
-                                    Зарегистрировать
+                                <button type="submit" class="btn btn-secondary col-md-7">
+                                    {{ __('Register') }}
                                 </button>
                             </div>
                         </div>
