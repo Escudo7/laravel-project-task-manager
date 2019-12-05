@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('header', 'Task Manadger')
+@section('header', 'Task Manager')
 
 @section('content')
     <div class="jumbotron">
