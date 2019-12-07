@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -55,11 +55,33 @@ class TaskControllerTest extends TestCase
 
     public function testUpdate()
     {
-        $date = Task::find(1)->toArray();
-        $date['status_id'] = 4;
+        $data = Task::find(1)->toArray();
+        $data['status_id'] = 4;
+        $data['type'] = 'globalUpdate';
         $response = $this->actingAs(User::first())
-            ->patch(route('tasks.update', Task::find(1)), $date);
+            ->patch(route('tasks.update', Task::find(1)), $data);
         $this->assertEquals(4, Task::find(1)->status->id);
+    }
+
+    public function testUpdateGetTask()
+    {
+        $this->assertNotEquals(1, Task::find(1)->assignedTo_id);
+        $data = ['type' => 'getTask'];
+        $this->actingAs(User::find(1))
+            ->patch(route('tasks.update', Task::find(1)), $data);
+        $this->assertEquals(1, Task::find(1)->assignedTo_id);
+    }
+
+    public function testUpdateAbandonTask()
+    {
+        $task = Task::find(1);
+        $task->assignedTo_id = 1;
+        $task->save();
+        $this->assertEquals(1, Task::find(1)->assignedTo_id);
+        $data = ['type' => 'abandonTask'];
+        $this->actingAs(User::find(1))
+            ->patch(route('tasks.update', Task::find(1)), $data);
+        $this->assertNotEquals(1, Task::find(1)->assignedTo_id);
     }
 
     public function testView()
@@ -67,24 +89,5 @@ class TaskControllerTest extends TestCase
         $response = $this->get(route('tasks.show', Task::find(1)));
         $response->assertStatus(200);
         $response->assertSee(Task::find(1)->name);
-    }
-
-    public function testGetTask()
-    {
-        $this->assertNotEquals(1, Task::find(1)->assignedTo_id);
-        $this->actingAs(User::first())
-            ->patch(route('tasks.get_task', Task::find(1)));
-        $this->assertEquals(1, Task::find(1)->assignedTo_id);
-    }
-
-    public function testAbandonTask()
-    {
-        $task =Task::find(1);
-        $task->assignedTo_id = 1;
-        $task->save();
-        $this->assertEquals(1, Task::find(1)->assignedTo_id);
-        $this->actingAs(User::first())
-            ->patch(route('tasks.abandon_task', Task::find(1)));
-        $this->assertNotEquals(1, Task::find(1)->assignedTo_id);
     }
 }

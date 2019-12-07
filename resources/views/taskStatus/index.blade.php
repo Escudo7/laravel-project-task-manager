@@ -17,12 +17,12 @@
             <td>{{ $status->id }}</td>
             <td class="{{ $status->id == 4 ? 'text-success' : '' }}">{{ $status->name }}</td>
             <td>
-                <div class="btn botton-color">
+                <div class="btn btn-primary">
                     <a href="{{ route('task_statuses.edit', $status) }}" class="text-white">{{ __('Change name') }}</a>
                 </div>
             </td>
             <td>
-                <div class="btn botton-color">
+                <div class="btn btn-primary">
                     <a href="{{ route('task_statuses.destroy', $status) }}" data-confirm="{{ __('Are you sure?') }}" data-method="delete" class="text-white">{{ __('Delete status') }}</a>
                 </div>
             </td>

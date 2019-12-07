@@ -18,7 +18,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-secondary text-white text-center big-text">{{ __('Enter your login and password') }}</div>
+                <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                    <h5>
+                        {{ __('Enter your login and password') }}
+                    </h5>
+                </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -66,7 +70,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-secondary">
+                                <button type="submit" class="btn btn-secondary col-md-4">
                                     {{ __('Log in') }}
                                 </button>
 

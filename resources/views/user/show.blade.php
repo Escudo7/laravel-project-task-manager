@@ -22,8 +22,10 @@
     <div class="card-group col-sm">
         <div class="col">
             <div class="card">
-                <div class="card-header bg-secondary text-white text-center big-text">
-                    {{ __('Registration information') }}
+                <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                    <h5>
+                        {{ __('Registration information') }}
+                    </h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -119,8 +121,10 @@
         </div>
         <div class="col">
             <div class="card border-light">
-                <div class="card-header bg-secondary text-white text-center big-text">
-                    {{__('Created tasks')}}
+                <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                    <h5>
+                        {{__('Created tasks') }}
+                    </h5>
                 </div>
                 <div class="card-body p-1">
                     @foreach($user->createdTasks as $task)
@@ -132,8 +136,10 @@
                 </div>
             </div>
             <div class="card border-light">
-                <div class="card-header bg-secondary text-white text-center big-text">
-                    {{ __('Assigned tasks') }}
+                <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                    <h5>
+                        {{ __('Assigned tasks') }}
+                    </h5>
                 </div>
                 <div class="card-body p-1">
                     @foreach($user->assignedTasks as $task)
@@ -148,21 +154,31 @@
         @if($user->id == $currentUser->id)
             <div class="col-sm-3">
                 <div class="card">
-                    <div class="card-header bg-secondary text-white text-center big-text">
-                        {{ __('Function') }}
+                    <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                        <h5>
+                            {{ __('Function') }}
+                        </h5>
                     </div>
                     <div class="card-body pl-5">
                         <div class="row">
-                            <a href="{{ route('tasks.create') }}" class='text-dark'>{{ __('Create new task') }}</a>
+                            <a href="{{ route('tasks.create') }}" class='text-dark'>
+                                {{ __('Create new task') }}
+                            </a>
                         </div>
                         <div class="row">
-                            <a href="{{ route('users.edit_password', $user) }}" class='text-dark'>{{ __('Chenge password') }}</a>
+                            <a href="{{ route('users.edit', ['user' => $user, 'type' => 'editPassword']) }}" class='text-dark' data-params="type=editPassword">
+                                {{ __('Chenge password') }}
+                            </a>
                         </div>
                         <div class="row">
-                            <a href="{{ route('users.edit', $user) }}" class='text-dark'>{{ __('Edit profile') }}</a>
+                            <a href="{{ route('users.edit', ['user' => $user, 'type' => 'editProfile']) }}" class='text-dark'>
+                                {{ __('Edit profile') }}
+                            </a>
                         </div>
                         <div class="row">
-                            <a href="{{ route('users.destroy', $user) }}" data-confirm="{{ __('Are you sure?') }}" data-method="delete" class='text-dark'>{{ __('Delete profile') }}</a>
+                            <a href="{{ route('users.destroy', $user) }}" data-confirm="{{ __('Are you sure?') }}" data-method="delete" class='text-dark'>
+                                {{ __('Delete profile') }}
+                            </a>
                         </div>
                     </div>
                 </div>

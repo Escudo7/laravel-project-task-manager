@@ -15,7 +15,7 @@
     ]) }}
     {{ Form::hidden('filter[myTasks]', true) }}
     <div class="form-group col-md-3 pl-3 my-2">
-            <button type="submit" class="btn botton-color text-white btn-block">
+            <button type="submit" class="btn text-white btn-primary btn-block">
                 {{ __('My tasks') }}
             </button>
     </div>
@@ -87,12 +87,12 @@
     
     <div class="form-row mr-3">
         <div class="form-group col-md-3 pl-4 my-2">
-            <button type="submit" class="btn botton-color text-white btn-block">
+            <button type="submit" class="btn btn-primary text-white btn-block">
                 {{ __('Apply filter')}}
             </button>
         </div>
 
-        <div class="btn botton-color text-white m-2 col-md-3 pb-1">
+        <div class="btn btn-primary text-white m-2 col-md-3 pb-1">
             <a href="{{ route('tasks.index') }}" class="text-white">{{ __('Remove all filters')}}</a>
         </div>
     </div>

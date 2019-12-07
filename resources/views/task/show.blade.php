@@ -17,8 +17,10 @@
 <div class="card-group col-sm">
     <div class="col">
         <div class="card">
-            <div class="card-header bg-secondary text-white text-center big-text">
-                {{ __('Task') }}
+            <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                <h5>
+                    {{ __('Task') }}
+                </h5>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -68,20 +70,28 @@
                                     {{ $task->assignedTo->name }}
                                 </a>
                                 @if($currentUser == $task->assignedTo)
-                                    <div class="btn btn-secondary">
-                                        <a href="{{ route('tasks.abandon_task', $task) }}" data-method="PATCH" class="text-white">
-                                            {{ __('Abandon task') }}
-                                        </a>
-                                    </div>
+                                    {{ Form::model($task, [
+                                            'url' => route('tasks.update', $task),
+                                            'method' => 'patch'
+                                            ]) }}
+                                            {{ Form::hidden('type', 'abandonTask') }}
+                                            <button type="submit" class="btn btn-secondary">
+                                                {{ __('Abandon task') }}
+                                            </button>
+                                    {{ Form::close() }}
                                 @endif
                             @else
                                 {{ __('not assigned') }}
                                 @auth
-                                    <div class="btn btn-secondary">
-                                        <a href="{{ route('tasks.get_task', $task) }}" data-method="PATCH" class="text-white">
-                                            {{ __('Get task') }}
-                                        </a>
-                                    </div>
+                                    {{ Form::model($task, [
+                                            'url' => route('tasks.update', $task),
+                                            'method' => 'patch'
+                                            ]) }}
+                                            {{ Form::hidden('type', 'getTask') }}
+                                            <button type="submit" class="btn btn-secondary">
+                                                {{ __('Get task') }}
+                                            </button>
+                                    {{ Form::close() }}
                                 @endauth
                             @endif
                         </p>
@@ -110,8 +120,10 @@
     <div class="col">
         @if(sizeof($task->comments) > 0)
         <div class="card border-light">
-            <div class="card-header bg-secondary text-white text-center big-text">
-                {{ __('Comments') }}
+            <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                <h5>
+                    {{ __('Comments') }}
+                </h5>
             </div>
             <div class="card-body p-0">
                 @foreach($task->comments()->orderBy('created_at')->get() as $comment)
@@ -138,8 +150,10 @@
         @endif
         @auth
         <div class="card border-light">
-            <div class="card-header bg-secondary text-white text-center big-text">
-                {{ __('Add new comment') }}
+            <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                <h5>
+                    {{ __('Add new comment') }}
+                </h5>
             </div>
             <div class="card-body">
                 {{ Form::model($comment, [

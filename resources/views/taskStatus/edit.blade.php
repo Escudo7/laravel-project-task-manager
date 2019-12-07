@@ -18,7 +18,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-secondary text-white text-center big-text">{{ __('Enter new name') }}</div>
+                <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                    <h5>
+                        {{ __('Enter new name') }}
+                    </h5>
+                </div>
 
                 <div class="card-body">
                     {{ Form::model($taskStatus, [
@@ -29,7 +33,7 @@
                         <div class="col">
                             <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required>
                         </div>
-                        <button type="submit" class="btn botton-color text-white col-md-3">
+                        <button type="submit" class="btn btn-primary text-white col-md-3">
                             {{ __('Save') }}
                         </button>
                     </div>

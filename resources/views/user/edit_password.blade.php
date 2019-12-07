@@ -18,12 +18,17 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-secondary text-white text-center big-text">{{ __('Please fill in the following form') }}</div>
+                <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                    <h5>
+                        {{ __('Please fill in the following form') }}
+                    </h5>
+                </div>
 
                 <div class="card-body">
                     {{ Form::model($user, [
-                        'url' => route('users.update_password', $user),
+                        'url' => route('users.update', $user),
                         'method' => 'PATCH']) }}
+                        {{ Form::hidden('type', 'updatePassword') }}
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('New password') }}</label>
 

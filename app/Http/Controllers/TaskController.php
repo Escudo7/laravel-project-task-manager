@@ -17,28 +17,29 @@ class TaskController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {    
+    {
+        
         $users = User::all();
         $tags = Tag::all();
         $statuses = TaskStatus::all();
 
         $query = Task::orderBy('id');
         $data = $request->all();
-        if (isset($date['filter']['myTasks'])) {
+        if (isset($data['filter']['myTasks'])) {
             $query = $query->myTasks($request->user()->id);
         } else {
-            $query = array_reduce(array_keys($data), function($acc, $key) use ($data) {
-                if(!isset($data[$key])) {
+            $query = array_reduce(array_keys($data), function ($acc, $key) use ($data) {
+                if (!isset($data[$key])) {
                     return $acc;
                 }
-                switch($key) {
+                switch ($key) {
                     case 'creator':
                         return $acc->creator($data[$key]);
                     case 'executor':
                         return $acc->executor($data[$key]);
-                    case 'status' :
+                    case 'status':
                         return $acc->status($data[$key]);
-                    case 'tag' :
+                    case 'tag':
                         return $acc->tag($data[$key]);
                 }
             }, $query);
@@ -71,7 +72,7 @@ class TaskController extends Controller
     {
         if (!\Auth::check()) {
             session()->flash('error', __('You must be logged in to perform this action'));
-            return redirect()->route('start');
+            return redirect()->route('home.index');
         }
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -110,7 +111,7 @@ class TaskController extends Controller
         ];
         $currentUser = $request->user();
         $tags = $task->tags()->get();
-        $comment = new \App\Comment;
+        $comment = new \App\Comment();
         return view('task.show', compact('task', 'message', 'currentUser', 'tags', 'comment'));
     }
 
@@ -142,73 +143,60 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        if ($request->user() != $task->creator && $request->user() != $task->assignedTo) {
-            session()->flash('error', __('You do not have enough authority to perform these actions'));
-            return redirect()->route('tasks.show', $task);
-        }
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'status_id' => ['required', 'exists:task_statuses,id'],
-            'assignedTo_id' => ['exists:users,id', 'nullable'],
-            'tags' => ['exists:tags,id', 'nullable']
-        ]);
-        $task->fill($request->except('dropTags', 'tags', 'newTag'));
-        if ($request['dropTags']) {
-            $task->tags()->sync([]);
-        }
-        if ($request['tags']) {
-            $task->tags()->sync($request['tags']);
-        }
-        if ($request['newTag']) {
-            $newTag = Tag::create(['name' => $request['newTag']]);
-            $task->tags()->attach($newTag);
-        }
-        $task->save();
-        session()->flash('success', __('Task has been changed'));
-        return redirect()->route('tasks.show', $task);
-    }
+        print_r($request['tags']);
+        switch ($request['type']) {
+            case 'globalUpdate':
+                if ($request->user() != $task->creator && $request->user() != $task->assignedTo) {
+                    session()->flash('error', __('You do not have enough authority to perform these actions'));
+                    return redirect()->route('tasks.show', $task);
+                }
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'status_id' => ['required', 'exists:task_statuses,id'],
+                    'assignedTo_id' => ['exists:users,id', 'nullable'],
+                    'tags' => ['exists:tags,id', 'nullable']
+                ]);
+                $task->fill($request->except('type', 'dropTags', 'tags', 'newTag'));
+                if ($request['dropTags']) {
+                    $task->tags()->sync([]);
+                }
+                if ($request['tags']) {
+                    $task->tags()->sync($request['tags']);
+                }
+                if ($request['newTag']) {
+                    $newTag = Tag::create(['name' => $request['newTag']]);
+                    $task->tags()->attach($newTag);
+                }
+                $task->save();
+                session()->flash('success', __('Task has been changed'));
+                break;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function get_task(Request $request, Task $task)
-    {
-        if (!\Auth::check()) {
-            session()->flash('error', __('You must be logged in to perform this action'));
-            return redirect()->route('start');
-        }
-        if ($task->assignedTo != null) {
-            session()->flash('error', __('Task already has executor'));
-            return redirect()->route('tasks.show', $task);
-        }
-        $task->assignedTo()->associate($request->user());
-        $task->status_id = 2;
-        $task->save();
-        session()->flash('success', __('You have successfully taken the task!'));
-        return redirect()->route('tasks.show', $task);
-    }
+            case 'getTask':
+                if (!\Auth::check()) {
+                    session()->flash('error', __('You must be logged in to perform this action'));
+                    return redirect()->route('home.index');
+                }
+                if ($task->assignedTo != null) {
+                    session()->flash('error', __('Task already has executor'));
+                    return redirect()->route('tasks.show', $task);
+                }
+                $task->assignedTo()->associate($request->user());
+                $task->status_id = 2;
+                $task->save();
+                session()->flash('success', __('You have successfully taken the task!'));
+                break;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function abandon_task(Request $request, Task $task)
-    {
-        if ($request->user() != $task->assignedTo) {
-            session()->flash('error', __('You do not have enough authority to perform these actions'));
-            return redirect()->route('tasks.show', $task);
+            case 'abandonTask':
+                if ($request->user() != $task->assignedTo) {
+                    session()->flash('error', __('You do not have enough authority to perform these actions'));
+                    return redirect()->route('tasks.show', $task);
+                }
+                $task->assignedTo()->dissociate();
+                $task->status_id = 1;
+                $task->save();
+                session()->flash('warning', __('You abandoned task'));
+                break;
         }
-        $task->assignedTo()->dissociate();
-        $task->status_id = 1;
-        $task->save();
-        session()->flash('warning', __('You abandoned task'));
         return redirect()->route('tasks.show', $task);
     }
 }

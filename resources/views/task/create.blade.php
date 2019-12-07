@@ -18,8 +18,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-secondary text-white text-center big-text">{{ __('Please fill in the following form') }}</div>
-
+                <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                    <h5>
+                        {{ __('Please fill in the following form') }}</div>
+                    </h5>
                 <div class="card-body">
                     <form method="POST" action="{{ route('tasks.store') }}">
                         @csrf

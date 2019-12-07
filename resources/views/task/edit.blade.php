@@ -18,13 +18,16 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-secondary text-white text-center big-text">{{ __('Please fill in the following form') }}</div>
-
+                <div class="card-header bg-secondary text-white text-center pt-3 pb-1">
+                <h5>
+                    {{ __('Please fill in the following form') }}</div>
+                </h5>
                 <div class="card-body">
                     {{ Form::model($task, [
                             'url' => route('tasks.update', $task),
                             'method' => 'PATCH']) }}
                     @csrf
+                        {{ Form::hidden('type', 'globalUpdate') }}
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
@@ -72,17 +75,6 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-4 text-md-right">
-                                <p>{{ __('Attached tags') }}</p>
-                            </div>
-                            <div class="col">
-                                @foreach($task->tags as $tag)
-                                    <a href="{{ route('tasks.index', ['tag' => $tag->id]) }}">{{ $tag->name }}</a>
-                                @endforeach
-                            </div>
-                        </div>
-
                         <div class="form-group row">
                             <label class="col-md-4 form-check-label text-md-right" for="dropTags">{{ __('Remove tags') }}</label>
                             <div class="form-check col-md-6 ml-3">
@@ -95,7 +87,11 @@
                             <div class="col-md-6">
                                 <select multiple class="form-control" id="tags[]" name="tags[]">
                                 @foreach($tags as $tag)
+                                    @if ($task->tags->contains($tag))
+                                    <option selected value="{{ $tag->id }} ">{{ $tag->name }}</option>
+                                    @else
                                     <option value="{{ $tag->id }} ">{{ $tag->name }}</option>
+                                    @endif
                                 @endforeach
                                 </select>
                             </div>

@@ -23,36 +23,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-    <style>
-        .header-h1 {
-            position: relative;
-            margin-bottom: .5rem;
-            text-align: center;
-        }
-
-        .header-h1 h1 {
-            margin-bottom: 0;
-            font-size: 1.7rem;
-            padding: 1rem 1.5rem;
-        }
-
-        .big-text {
-            font-size: 1.3rem;
-        }
-        .botton-color {
-            background-color: #6596ad;
-        }
-    </style>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{{ route('start') }}">Task Manager</a>
+        <a class="navbar-brand" href="{{ route('home.index') }}">Task Manager</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('start') }}">{{ __('Home') }}</a>
+                    <a class="nav-link" href="{{ route('home.index') }}">{{ __('Home') }}</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ route('users.index') }}">{{ __('Users') }}</a>
@@ -111,10 +90,10 @@
         @endif
     @endif
 
-    <div class="header-h1 text-center bg-secondary text-white text-uppercase">
-        <h1 class="font-weight-bold">
+    <div class="text-center bg-secondary text-white text-uppercase pb-2 pt-3 mb-2">
+        <h3 class="font-weight-bold">
             @yield('header')
-        </h1>
+        </h3>
     </div>
     <main class="py-4">
         @yield('content')

@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
+    use AuthenticatesUsers;
+    
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -17,8 +19,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
-    use AuthenticatesUsers;
 
     protected function redirectTo()
     {
@@ -45,6 +45,6 @@ class LoginController extends Controller
     {
         \Auth::logout();
         session()->flash('warning', __('You are logged out'));
-        return redirect()->route('start');
+        return redirect()->route('home.index');
     }
 }

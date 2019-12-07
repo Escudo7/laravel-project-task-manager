@@ -50,9 +50,14 @@ class UserController extends Controller
     {
         if ($request->user() != $user) {
             session()->flash('error', __('You do not have enough authority to perform these actions'));
-            return redirect()->route('start');
+            return redirect()->route('home.index');
         }
-        return view('user.edit', compact('user'));
+        switch ($request['type']) {
+            case 'editProfile':
+                return view('user.edit_profile', compact('user'));
+            case 'editPassword':
+                return view('user.edit_password', compact('user'));
+        }
     }
 
     /**
@@ -64,24 +69,38 @@ class UserController extends Controller
      */
 
     public function update(Request $request, User $user)
-    {      
+    {
         if ($request->user() != $user) {
             session()->flash('error', __('You do not have enough authority to perform these actions'));
-            return redirect()->route('start');
+            return redirect()->route('home.index');
         }
-        $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'sex' => [Rule::in(['male', 'female']), 'nullable'],
-            'birth_day' => ['integer', 'min:1', 'max:31', 'nullable'],
-            'birth_month' => ['integer', 'min:1', 'max:12', 'nullable'],
-            'birth_year' => ['integer', 'min:1930', 'max:2015', 'nullable'],
-            'country' => ['string', 'max:255', 'nullable'],
-            'city' => ['string', 'max:255', 'nullable'],
-        ]);
-        $user->fill($request->all());
-        $user->save();
-        session()->flash('success', __('Your profile has been successfully modified!'));
+        
+        switch ($request['type']) {
+            case 'updatePassword':
+                $request->validate([
+                    'password' => ['required', 'string', 'min:8', 'confirmed'],
+                ]);
+                $user->password = Hash::make($request['password']);
+                $user->save();
+                session()->flash('success', __('Your password has been successfully changed'));
+                break;
+            
+            case 'updateProfile':
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+                    'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+                    'sex' => [Rule::in(['male', 'female']), 'nullable'],
+                    'birth_day' => ['integer', 'min:1', 'max:31', 'nullable'],
+                    'birth_month' => ['integer', 'min:1', 'max:12', 'nullable'],
+                    'birth_year' => ['integer', 'min:1930', 'max:2015', 'nullable'],
+                    'country' => ['string', 'max:255', 'nullable'],
+                    'city' => ['string', 'max:255', 'nullable'],
+                ]);
+                $user->fill($request->except('type'));
+                $user->save();
+                session()->flash('success', __('Your profile has been successfully modified!'));
+                break;
+        }
         return redirect()->route('users.show', $user);
     }
 
@@ -96,7 +115,7 @@ class UserController extends Controller
     {
         if ($request->user() != $user) {
             session()->flash('error', __('You do not have enough authority to perform these actions'));
-            return redirect()->route('start');
+            return redirect()->route('home.index');
         }
         foreach ($user->assignedTasks as $task) {
             $task->assignedTo()->dissociate();
@@ -104,44 +123,6 @@ class UserController extends Controller
         }
         $user->delete();
         session()->flash('warning', __('Your profile has been deleted'));
-        return redirect()->route('start');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit_password(Request $request, User $user)
-    {
-        if ($request->user() != $user) {
-            session()->flash('error', __('You do not have enough authority to perform these actions'));
-            return redirect()->route('start');
-        }
-        return view('user.edit_password', compact('user'));
-    }
-
-    /**
-     * Update_update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update_password(Request $request, User $user)
-    {
-        if ($request->user() != $user) {
-            session()->flash('error', __('You do not have enough authority to perform these actions'));
-            return redirect()->route('start');
-        }
-        $request->validate([
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-        $user->password = Hash::make($request['password']);
-        $user->save();
-        session()->flash('success', __('Your password has been successfully changed'));
-        return redirect()->route('users.show', $user);
+        return redirect()->route('home.index');
     }
 }
