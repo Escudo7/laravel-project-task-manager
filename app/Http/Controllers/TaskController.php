@@ -18,7 +18,6 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        
         $users = User::all();
         $tags = Tag::all();
         $statuses = TaskStatus::all();
@@ -143,7 +142,6 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        print_r($request['tags']);
         switch ($request['type']) {
             case 'globalUpdate':
                 if ($request->user() != $task->creator && $request->user() != $task->assignedTo) {
