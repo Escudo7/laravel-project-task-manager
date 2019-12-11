@@ -51,8 +51,8 @@
                             <label for="assignedTo_id" class="col-md-4 col-form-label text-md-right">{{ __('Executor') }}</label>
                             <div class="col-md-6">
                                 <select class="form-control" id="assignedTo_id" name="assignedTo_id">
-                                @if($task->assignedTo)
-                                    <option value="{{ old('assignedTo_id') ?? $task->assignedTo->id }}">{{ $task->assignedTo->name }}</option>
+                                @if($task->executor)
+                                    <option value="{{ old('assignedTo_id') ?? $task->executor->id }}">{{ $task->executor->name }}</option>
                                 @else
                                     <option value="{{ old('assignedTo_id') ?? '' }}">{{ __('assign later') }}</option>
                                 @endif

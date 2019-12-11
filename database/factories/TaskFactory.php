@@ -20,3 +20,11 @@ $factory->state(Task::class, 'new task', [
 $factory->state(Task::class, 'working', [
     'status_id' => 2,
 ]);
+
+$factory->state(Task::class, 'testing', [
+    'status_id' => 3,
+]);
+
+$factory->state(Task::class, 'terminated', [
+    'status_id' => 4,
+]);

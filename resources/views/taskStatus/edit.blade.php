@@ -31,7 +31,7 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col">
-                            <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required>
+                            <input id="name" type="text" class="form-control" name="name" value="{{ old('name') ?? $taskStatus->name }}" required>
                         </div>
                         <button type="submit" class="btn btn-primary text-white col-md-3">
                             {{ __('Save') }}

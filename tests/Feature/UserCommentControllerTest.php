@@ -17,9 +17,24 @@ class UserCommentControllerTest extends TestCase
     {
         factory(User::class)->create();
         factory(Task::class)->state('new task')->create();
-        $date = ['body' => 'new comment', 'task_id' => 1];
-        $this->actingAs(User::first())
-            ->post(route('users.comments.store', User::first()), $date);
+        $user = User::first();
+        $task = Task::first();
+
+        $dataToCreate = [
+            'body' => \Faker\Factory::create()->text(20),
+            'task_id' => $task->id
+        ];
+
+        $route = route('users.comments.store', $user);
+        $this->actingAs($user)->post($route, $dataToCreate);
+
         $this->assertEquals(1, Comment::count());
+
+        $comment = Comment::first();
+        $dataComment = [
+            'body' => $comment->body,
+            'task_id' => $comment->task->id
+        ];
+        $this->assertEquals($dataToCreate, $dataComment);
     }
 }

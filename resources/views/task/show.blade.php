@@ -65,11 +65,11 @@
                     </div>
                     <div class="col">
                         <p>
-                            @if($task->assignedTo)
-                                <a href="{{ $task->assignedTo->trashed() ? '' : route('users.show', $task->assignedTo) }}">
-                                    {{ $task->assignedTo->name }}
+                            @if($task->executor)
+                                <a href="{{ $task->executor->trashed() ? '' : route('users.show', $task->executor) }}">
+                                    {{ $task->executor->name }}
                                 </a>
-                                @if($currentUser == $task->assignedTo)
+                                @if($user == $task->executor)
                                     {{ Form::model($task, [
                                             'url' => route('tasks.update', $task),
                                             'method' => 'patch'
@@ -102,12 +102,12 @@
                         <p>{{ __('Tags') }}</p>
                     </div>
                     <div class="col">
-                        @foreach($tags as $tag)
+                        @foreach($task->tags as $tag)
                             <a href="{{ route('tasks.index', ['tag' => $tag->id]) }}">{{ $tag->name }}</a>
                         @endforeach
                     </div>
                 </div>
-                @if($currentUser == $task->creator || $currentUser == $task->assignedTo)
+                @if($user == $task->creator || $user == $task->executor)
                     <div class="btn btn-secondary">
                         <a href="{{ route('tasks.edit', $task) }}" class="text-white">
                             {{ __('Chenge task') }}
@@ -157,7 +157,7 @@
             </div>
             <div class="card-body">
                 {{ Form::model($comment, [
-                    'url' => route('users.comments.store', $currentUser),
+                    'url' => route('users.comments.store', $user),
                     'method' => 'POST']) }}
                 @csrf
                     <div class="form-group row">

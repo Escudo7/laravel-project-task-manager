@@ -120,9 +120,9 @@
                 </a>
             </td>
             <td>
-                @if ($task->assignedTo)
-                    <a href="{{ $task->assignedTo->trashed() ? '' : route('users.show', $task->assignedTo) }}">
-                        {{ $task->assignedTo->name }}
+                @if ($task->executor)
+                    <a href="{{ $task->executor->trashed() ? '' : route('users.show', $task->executor) }}">
+                        {{ $task->executor->name }}
                     </a>
                 @else 
                      {{ __('not assigned') }}

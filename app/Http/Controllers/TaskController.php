@@ -40,10 +40,11 @@ class TaskController extends Controller
                         return $acc->status($data[$key]);
                     case 'tag':
                         return $acc->tag($data[$key]);
+                    default:
+                        return $acc;
                 }
             }, $query);
         }
-        
         $tasks = $query->paginate(10);
         return view('task.index', compact('tasks', 'users', 'tags', 'statuses'));
     }
@@ -78,18 +79,24 @@ class TaskController extends Controller
             'assignedTo_id' => ['exists:users,id', 'nullable'],
             'tags' => ['exists:tags,id', 'nullable']
         ]);
+
+        $statusNewTask = TaskStatus::find(1);
         $task = new Task();
         $task->fill($request->except('tags', 'newTag'));
         $task->creator()->associate($request->user());
-        $task->status_id = 1;
+        $task->status()->associate($statusNewTask);
         $task->save();
+
         if ($request['tags']) {
             $task->tags()->sync($request['tags']);
         }
+
         if ($request['newTag']) {
-            $newTag = Tag::create(['name' => $request['newTag']]);
+            $dataNewTag = ['name' => $request['newTag']];
+            $newTag = Tag::create($dataNewTag);
             $task->tags()->attach($newTag);
         }
+
         session()->flash('success', __('Task was created successfully'));
         return redirect()->route('tasks.show', $task);
     }
@@ -108,10 +115,9 @@ class TaskController extends Controller
             'warning' => session('warning'),
             'error' => session('error')
         ];
-        $currentUser = $request->user();
-        $tags = $task->tags()->get();
+        $user = $request->user();
         $comment = new \App\Comment();
-        return view('task.show', compact('task', 'message', 'currentUser', 'tags', 'comment'));
+        return view('task.show', compact('task', 'message', 'user', 'comment'));
     }
 
     /**
@@ -123,10 +129,12 @@ class TaskController extends Controller
      */
     public function edit(Request $request, Task $task)
     {
-        if ($request->user() != $task->creator && $request->user() != $task->assignedTo) {
+        $user = $request->user();
+        if ($user != $task->creator && $user != $task->executor) {
             session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('tasks.show', $task);
         }
+
         $users = User::all();
         $statuses = TaskStatus::all();
         $tags = Tag::all();
@@ -142,18 +150,23 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        switch ($request['type']) {
+        $user = $request->user();
+
+        $typeUpdate = $request['type'];
+        switch ($typeUpdate) {
             case 'globalUpdate':
-                if ($request->user() != $task->creator && $request->user() != $task->assignedTo) {
+                if ($user != $task->creator && $user != $task->executor) {
                     session()->flash('error', __('You do not have enough authority to perform these actions'));
                     return redirect()->route('tasks.show', $task);
                 }
+
                 $request->validate([
                     'name' => ['required', 'string', 'max:255'],
                     'status_id' => ['required', 'exists:task_statuses,id'],
                     'assignedTo_id' => ['exists:users,id', 'nullable'],
                     'tags' => ['exists:tags,id', 'nullable']
                 ]);
+
                 $task->fill($request->except('type', 'dropTags', 'tags', 'newTag'));
                 if ($request['dropTags']) {
                     $task->tags()->sync([]);
@@ -166,6 +179,7 @@ class TaskController extends Controller
                     $task->tags()->attach($newTag);
                 }
                 $task->save();
+
                 session()->flash('success', __('Task has been changed'));
                 break;
 
@@ -174,24 +188,30 @@ class TaskController extends Controller
                     session()->flash('error', __('You must be logged in to perform this action'));
                     return redirect()->route('home.index');
                 }
-                if ($task->assignedTo != null) {
+                if ($task->executor != null) {
                     session()->flash('error', __('Task already has executor'));
                     return redirect()->route('tasks.show', $task);
                 }
-                $task->assignedTo()->associate($request->user());
-                $task->status_id = 2;
+
+                $task->executor()->associate($user);
+                $statusWorkingTask = TaskStatus::find(2);
+                $task->status()->associate($statusWorkingTask);
                 $task->save();
+
                 session()->flash('success', __('You have successfully taken the task!'));
                 break;
 
             case 'abandonTask':
-                if ($request->user() != $task->assignedTo) {
+                if ($user != $task->executor) {
                     session()->flash('error', __('You do not have enough authority to perform these actions'));
                     return redirect()->route('tasks.show', $task);
                 }
-                $task->assignedTo()->dissociate();
-                $task->status_id = 1;
+
+                $task->executor()->dissociate();
+                $statusNotWorkingTask = TaskStatus::find(1);
+                $task->status()->associate($statusNotWorkingTask);
                 $task->save();
+                
                 session()->flash('warning', __('You abandoned task'));
                 break;
         }

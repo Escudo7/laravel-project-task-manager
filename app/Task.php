@@ -24,7 +24,7 @@ class Task extends Model
         return $this->belongsTo('App\User')->withTrashed();
     }
 
-    public function assignedTo()
+    public function executor()
     {
         return $this->belongsTo('App\User', 'assignedTo_id')->withTrashed();
     }

@@ -50,9 +50,11 @@ class TaskStatusController extends Controller
         $request->validate([
             'name' => ['required', Rule::unique('task_statuses')]
         ]);
+
         $taskStatus = new TaskStatus();
         $taskStatus->fill($request->all());
         $taskStatus->save();
+
         session()->flash('success', __('Status successfully added!'));
         return redirect()->route('task_statuses.index');
     }
@@ -78,10 +80,12 @@ class TaskStatusController extends Controller
     public function update(Request $request, TaskStatus $taskStatus)
     {
         $request->validate([
-            'name' => ['required', Rule::unique('task_statuses')]
+            'name' => ['required', Rule::unique('task_statuses')->ignore($taskStatus->id)]
         ]);
+
         $taskStatus->fill($request->all());
         $taskStatus->save();
+
         session()->flash('success', __('Status has been successfully changed!'));
         return redirect()->route('task_statuses.index');
     }

@@ -25,6 +25,7 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
         'firstname' => $faker->name,
         'lastname' => $faker->name,
+        'sex' => $faker->randomElement(['male', 'female']),
         'birth_day' => $faker->numberBetween($min = 1, $max = 31),
         'birth_month' => $faker->numberBetween($min = 1, $max = 12),
         'birth_year' => $faker->numberBetween($min = 1930, $max = 2015),

@@ -6,6 +6,8 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use App\TaskStatus;
+use App\Task;
 
 class UserController extends Controller
 {
@@ -35,7 +37,7 @@ class UserController extends Controller
             'error' => session('error')
         ];
         $currentUser = $request->user();
-        $tasks = \App\Task::all();
+        $tasks = Task::all();
         return view('user.show', compact('user', 'message', 'currentUser', 'tasks'));
     }
 
@@ -52,9 +54,12 @@ class UserController extends Controller
             session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('home.index');
         }
-        switch ($request['type']) {
+
+        $typeEditing = $request['type'];
+        switch ($typeEditing) {
             case 'editProfile':
                 return view('user.edit_profile', compact('user'));
+
             case 'editPassword':
                 return view('user.edit_password', compact('user'));
         }
@@ -75,7 +80,8 @@ class UserController extends Controller
             return redirect()->route('home.index');
         }
         
-        switch ($request['type']) {
+        $typeUpdate = $request['type'];
+        switch ($typeUpdate) {
             case 'updatePassword':
                 $request->validate([
                     'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -117,11 +123,19 @@ class UserController extends Controller
             session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('home.index');
         }
+
         foreach ($user->assignedTasks as $task) {
-            $task->assignedTo()->dissociate();
+            $task->executor()->dissociate();
+            $statusTerminatedTask = TaskStatus::find(4);
+            if ($task->status != $statusTerminatedTask) {
+                $statusNotWorkingTask = TaskStatus::find(1);
+                $task->status()->associate($statusNotWorkingTask);
+            }
             $task->save();
         }
+
         $user->delete();
+
         session()->flash('warning', __('Your profile has been deleted'));
         return redirect()->route('home.index');
     }
