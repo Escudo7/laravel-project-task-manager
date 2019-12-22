@@ -7,9 +7,13 @@ use App\User;
 use App\Tag;
 use App\TaskStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
+    const NEW_TASK_STATUS_NUMBER = 1;
+    const WORKING_TASK_STATUS_NUMBER = 2;
+    
     /**
      * Display a listing of the resource.
      *
@@ -80,7 +84,7 @@ class TaskController extends Controller
             'tags' => ['exists:tags,id', 'nullable']
         ]);
 
-        $statusNewTask = TaskStatus::find(1);
+        $statusNewTask = TaskStatus::find(self::NEW_TASK_STATUS_NUMBER);
         $task = new Task();
         $task->fill($request->except('tags', 'newTag'));
         $task->creator()->associate($request->user());
@@ -130,7 +134,7 @@ class TaskController extends Controller
     public function edit(Request $request, Task $task)
     {
         $user = $request->user();
-        if ($user != $task->creator && $user != $task->executor) {
+        if (Gate::forUser($user)->denies('edit-task', $task)) {
             session()->flash('error', __('You do not have enough authority to perform these actions'));
             return redirect()->route('tasks.show', $task);
         }
@@ -155,11 +159,11 @@ class TaskController extends Controller
         $typeUpdate = $request['type'];
         switch ($typeUpdate) {
             case 'globalUpdate':
-                if ($user != $task->creator && $user != $task->executor) {
+                
+                if (Gate::forUser($user)->denies('edit-task', $task)) {
                     session()->flash('error', __('You do not have enough authority to perform these actions'));
                     return redirect()->route('tasks.show', $task);
                 }
-
                 $request->validate([
                     'name' => ['required', 'string', 'max:255'],
                     'status_id' => ['required', 'exists:task_statuses,id'],
@@ -194,7 +198,7 @@ class TaskController extends Controller
                 }
 
                 $task->executor()->associate($user);
-                $statusWorkingTask = TaskStatus::find(2);
+                $statusWorkingTask = TaskStatus::find(self::WORKING_TASK_STATUS_NUMBER);
                 $task->status()->associate($statusWorkingTask);
                 $task->save();
 
@@ -202,14 +206,14 @@ class TaskController extends Controller
                 break;
 
             case 'abandonTask':
-                if ($user != $task->executor) {
+                if (Gate::forUser($user)->denies('abandon-task', $task)) {
                     session()->flash('error', __('You do not have enough authority to perform these actions'));
                     return redirect()->route('tasks.show', $task);
                 }
 
                 $task->executor()->dissociate();
-                $statusNotWorkingTask = TaskStatus::find(1);
-                $task->status()->associate($statusNotWorkingTask);
+                $notWorkingTaskStatus = TaskStatus::find(self::NEW_TASK_STATUS_NUMBER);
+                $task->status()->associate($notWorkingTaskStatus);
                 $task->save();
                 
                 session()->flash('warning', __('You abandoned task'));

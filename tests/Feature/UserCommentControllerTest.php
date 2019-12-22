@@ -15,26 +15,12 @@ class UserCommentControllerTest extends TestCase
 
     public function testStore()
     {
-        factory(User::class)->create();
-        factory(Task::class)->state('new task')->create();
-        $user = User::first();
-        $task = Task::first();
-
-        $dataToCreate = [
-            'body' => \Faker\Factory::create()->text(20),
-            'task_id' => $task->id
-        ];
-
-        $route = route('users.comments.store', $user);
-        $this->actingAs($user)->post($route, $dataToCreate);
-
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $task = factory(Task::class)->state('new task')->create();
+        $modelComment = factory(Comment::class)->make();
+        
+        $this->post(route('users.comments.store', $user), $modelComment->toArray());
         $this->assertEquals(1, Comment::count());
-
-        $comment = Comment::first();
-        $dataComment = [
-            'body' => $comment->body,
-            'task_id' => $comment->task->id
-        ];
-        $this->assertEquals($dataToCreate, $dataComment);
     }
 }

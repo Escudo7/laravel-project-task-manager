@@ -12,139 +12,82 @@ use App\User;
 class TaskControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    const TYPE_GLOBAL_UPDATE = 'globalUpdate';
+    const TYPE_UPDATE_GET_TASK = 'getTask';
+    const TYPE_UPDATE_ABANDON_TASK = 'abandonTask';
+    const NEW_TASK_STATUS = 'new task';
+    const WORKING_TASK_STATUS = 'working';
     
     public function setUp(): void
     {
         parent::setUp();
 
         factory(User::class)->create();
-
-        factory(Task::class)->state('new task')->create();
-        factory(Task::class)->state('working')->create();
-        factory(Task::class)->state('testing')->create();
-        factory(Task::class)->state('terminated')->create();
-
+        $this->task1 = factory(Task::class)->state(self::NEW_TASK_STATUS)->create();
+        $this->task2 = factory(Task::class)->state(self::WORKING_TASK_STATUS)->create();
         $this->user = User::first();
+        $this->actingAs($this->user);
     }
     
     public function testIndex()
     {
         $response = $this->get(route('tasks.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee(Task::first()->name);
+        $response->assertStatus(200)
+            ->assertSee(Task::first()->name);
     }
 
     public function testIndexWithFilter()
     {
-        $taskStatus1 = TaskStatus::first();
-        $taskStatus2 = TaskStatus::whereNotIn('id', [$taskStatus1->id])->first();
-
-        $task1 = Task::where('status_id', $taskStatus1->id)->first();
-        $task2 = Task::where('status_id', $taskStatus2->id)->first();
-
-        $data = ['status' => $taskStatus1->id];
-
-        $route = route('tasks.index', $data);
-        $response = $this->get($route);
-
-        $response->assertStatus(200);
-        $response->assertSee($task1->name);
-        $response->assertDontSee($task2->name);
+        $data = ['status' => $this->task1->status->id];
+        $response = $this->get(route('tasks.index', $data));
+        $response->assertStatus(200)
+            ->assertSee($this->task1->name)
+            ->assertDontSee($this->task2->name);
     }
 
     public function testStore()
     {
-        $taskName = \Faker\Factory::create()->text(20);
-        $data = ['name' => $taskName];
-
-        $route = route('tasks.store', $data);
-        $response = $this->actingAs($this->user)->post($route);
-
+        $data = ['name' => factory(Task::class)->make()->name];
+        $response = $this->post(route('tasks.store', $data));
         $response->assertStatus(302);
-        $this->assertEquals(5, Task::count());
-        $this->assertEquals(1, Task::where('name', $taskName)->count());
-    }
-
-    public function testStoreWithoutAuthentication()
-    {
-        $taskName = \Faker\Factory::create()->text(20);
-        $data = ['name' => $taskName];
-
-        $route = route('tasks.store', $data);
-        $response = $this->post($route);
-
-        $response->assertStatus(302);
-        $this->assertEquals(4, Task::count());
-        $this->assertEquals(0, Task::where('name', $taskName)->count());
+        $this->assertEquals(3, Task::count());
     }
 
     public function testUpdate()
     {
-        $task = Task::first();
-        $status = TaskStatus::whereNotIn('id', [$task->status->id])->first();
-        $executor = factory(User::class)->create();
-        $newData = [
-            'name' => \Faker\Factory::create()->text(20),
-            'description' => \Faker\Factory::create()->text(30),
-            'status_id' => $status->id,
-            'assignedTo_id' => $executor->id
-        ];
+        $modelTaskForUpdate = factory(Task::class)->state(self::NEW_TASK_STATUS)->make();
+        $dataForUpdate = $modelTaskForUpdate->toArray();
+        $dataForUpdate['type'] = self::TYPE_GLOBAL_UPDATE;
 
-        $typeUpdate = 'globalUpdate';
-        $dataForUpdate = array_merge($newData, ['type' => $typeUpdate]);
+        $response = $this->patch(route('tasks.update', $this->task1), $dataForUpdate);
 
-        $route = route('tasks.update', $task);
-        $response = $this->actingAs($this->user)->patch($route, $dataForUpdate);
-
-        $updatedTask = Task::find($task->id);
-        $updatedData = [
-            'name' => $updatedTask->name,
-            'description' => $updatedTask->description,
-            'status_id' => $updatedTask->status->id,
-            'assignedTo_id' => $updatedTask->executor->id
-        ];
-        $this->assertEquals($newData, $updatedData);
+        $this->task1->refresh();
+        $this->assertEquals($this->task1->description, $dataForUpdate['description']);
     }
 
     public function testUpdateGetTask()
     {
-        $task = Task::first();
-        $this->assertNotEquals($this->user, $task->executor);
-
-        $typeUpdate = 'getTask';
-        $data = ['type' => $typeUpdate];
-
-        $route = route('tasks.update', $task);
-        $this->actingAs($this->user)->patch($route, $data);
-        
-        $updatedTask = Task::find($task->id);
-        $this->assertEquals($this->user, $updatedTask->executor);
+        $data = ['type' => self::TYPE_UPDATE_GET_TASK];
+        $this->patch(route('tasks.update', $this->task1), $data);
+        $this->task1->refresh();
+        $this->assertEquals($this->user, $this->task1->executor);
     }
 
     public function testUpdateAbandonTask()
     {
-        $task = Task::first();
-        $task->executor()->associate($this->user);
-        $task->save();
-        $this->assertEquals($this->user, $task->executor);
-
-        $typeUpdate = 'abandonTask';
-        $data = ['type' => $typeUpdate];
-
-        $route = route('tasks.update', $task);
-        $this->actingAs($this->user)->patch($route, $data);
-
-        $updatedTask = Task::find($task->id);
-        $this->assertNotEquals($this->user, $updatedTask->executor);
+        $this->task1->executor()->associate($this->user);
+        $this->task1->save();
+        $data = ['type' => self::TYPE_UPDATE_ABANDON_TASK];
+        $this->patch(route('tasks.update', $this->task1), $data);
+        $this->task1->refresh();
+        $this->assertNotEquals($this->user, $this->task1->executor);
     }
 
     public function testView()
     {
-        $task = Task::first();
-        $response = $this->get(route('tasks.show', $task));
-
-        $response->assertStatus(200);
-        $response->assertSee($task->name);
+        $response = $this->get(route('tasks.show', $this->task1));
+        $response->assertStatus(200)
+            ->assertSee($this->task1->name);
     }
 }

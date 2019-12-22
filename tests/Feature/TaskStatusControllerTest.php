@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\User;
 use App\Task;
@@ -17,71 +16,46 @@ class TaskStatusControllerTest extends TestCase
     {
         parent::setUp();
 
-        factory(User::class)->create();
-        $this->user = User::first();
+        $this->user = factory(User::class)->create();
+        $this->actingAs($this->user);
+        $this->status = TaskStatus::first();
     }
     
     public function testIndex()
     {
-        $route = route('task_statuses.index');
-        $response = $this->actingAs($this->user)->get($route);
-
-        $response->assertStatus(200);
-
-        $status = TaskStatus::first();
-        $response->assertSee($status->name);
+        $response = $this->get(route('task_statuses.index'));
+        $response->assertStatus(200)
+            ->assertSee($this->status->name);
     }
 
     public function testStore()
     {
-        $newStatusName = 'new status test';
-        $date = ['name' => $newStatusName];
-
-        $route = route('task_statuses.store');
-        $response = $this->actingAs($this->user)->post($route, $date);
-
+        $modelNewStatus = factory(TaskStatus::class)->make();
+        $response = $this->post(route('task_statuses.store'), $modelNewStatus->toArray());
         $response->assertStatus(302);
         $this->assertEquals(5, TaskStatus::count());
-
-        $statusWithNewNameCount = TaskStatus::where('name', $newStatusName)->count();
-        $this->assertEquals(1, $statusWithNewNameCount);
     }
 
     public function testUpdate()
     {
-        $status = TaskStatus::first();
-        $newStatusName = 'new status test';
-        $data = $status->toArray();
-        $updatedData = array_replace($data, ['name' => $newStatusName]);
-
-        $route = route('task_statuses.update', $status);
-        $response = $this->actingAs($this->user)->patch($route, $updatedData);
-
+        $modelNewStatus = factory(TaskStatus::class)->make();
+        $response = $this->patch(route('task_statuses.update', $this->status), $modelNewStatus->toArray());
         $response->assertStatus(302);
-
-        $updatedStatus = TaskStatus::find($status->id);
-        $this->assertEquals($newStatusName, $updatedStatus->name);
+        $this->status->refresh();
+        $this->assertEquals($modelNewStatus->name, $this->status->name);
     }
 
     public function testDestroy()
     {
-        $status = TaskStatus::first();
-        $route = route('task_statuses.destroy', $status);
-        $response = $this->actingAs($this->user)->delete($route);
-
+        $response = $this->delete(route('task_statuses.destroy', $this->status));
         $response->assertStatus(302);
         $this->assertEquals(3, TaskStatus::count());
     }
 
     public function testDestroyWithDate()
     {
-        $statusName = 'testing';
-        $status = TaskStatus::where('name', $statusName)->first();
-        factory(Task::class)->state($statusName)->create();
-        
-        $route = route('task_statuses.destroy', $status);
-        $response = $this->actingAs($this->user)->delete($route);
-
+        factory(Task::class)->state($this->status->name)->create();
+        $response = $this->delete(route('task_statuses.destroy', $this->status));
         $response->assertStatus(302);
         $this->assertEquals(4, TaskStatus::count());
     }
