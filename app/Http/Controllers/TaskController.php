@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
-    const NEW_TASK_STATUS_NUMBER = 1;
-    const WORKING_TASK_STATUS_NUMBER = 2;
+    public const NEW_TASK_STATUS_NUMBER = 1;
+    public const WORKING_TASK_STATUS_NUMBER = 2;
     
     /**
      * Display a listing of the resource.
@@ -159,7 +159,6 @@ class TaskController extends Controller
         $typeUpdate = $request['type'];
         switch ($typeUpdate) {
             case 'globalUpdate':
-                
                 if (Gate::forUser($user)->denies('edit-task', $task)) {
                     session()->flash('error', __('You do not have enough authority to perform these actions'));
                     return redirect()->route('tasks.show', $task);

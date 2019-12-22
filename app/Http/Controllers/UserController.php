@@ -11,8 +11,8 @@ use App\Task;
 
 class UserController extends Controller
 {
-    const NEW_TASK_STATUS_NUMBER = 1;
-    const TERMINATED_TASK_STATUS_NUMBER = 1;
+    public const NEW_TASK_STATUS_NUMBER = 1;
+    public const TERMINATED_TASK_STATUS_NUMBER = 1;
     
     /**
      * Display a listing of the resource.

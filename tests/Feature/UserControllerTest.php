@@ -11,7 +11,7 @@ class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    const TYPE_UPDATE = 'updateProfile';
+    public const TYPE_UPDATE = 'updateProfile';
 
     public function setUp(): void
     {

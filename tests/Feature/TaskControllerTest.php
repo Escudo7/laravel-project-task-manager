@@ -13,11 +13,11 @@ class TaskControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    const TYPE_GLOBAL_UPDATE = 'globalUpdate';
-    const TYPE_UPDATE_GET_TASK = 'getTask';
-    const TYPE_UPDATE_ABANDON_TASK = 'abandonTask';
-    const NEW_TASK_STATUS = 'new task';
-    const WORKING_TASK_STATUS = 'working';
+    public const TYPE_GLOBAL_UPDATE = 'globalUpdate';
+    public const TYPE_UPDATE_GET_TASK = 'getTask';
+    public const TYPE_UPDATE_ABANDON_TASK = 'abandonTask';
+    public const NEW_TASK_STATUS = 'new task';
+    public const WORKING_TASK_STATUS = 'working';
     
     public function setUp(): void
     {
