@@ -32,7 +32,7 @@
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required>
                                 <small id="nameHelpBlock" class="form-text text-muted">
-                                    {{ __('Requred field') }}
+                                    {{ __('Required field') }}
                                 </small>
                             </div>
                         </div>
@@ -52,6 +52,21 @@
                                 <option value="">{{ __('assign later') }}</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id}} ">{{ $user->name }}</option>
+                                @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="status_id" class="col-md-4 col-form-label text-md-right">{{ __('Task status') }}</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="status_id" name="status_id" value="{{ old('status_id') ?? $task->status_id }}">
+                                @foreach($statuses as $status)
+                                    @if($status->id == 1)
+                                        <option selected value="{{ $status->id}} ">{{ $status->name }}</option>
+                                    @else
+                                        <option value="{{ $status->id}} ">{{ $status->name }}</option>
+                                    @endif
                                 @endforeach
                                 </select>
                             </div>

@@ -33,7 +33,7 @@ class TaskStatusControllerTest extends TestCase
         $modelNewStatus = factory(TaskStatus::class)->make();
         $response = $this->post(route('task_statuses.store'), $modelNewStatus->toArray());
         $response->assertStatus(302);
-        $this->assertEquals(5, TaskStatus::count());
+        $this->assertEquals(1, TaskStatus::where('name', $modelNewStatus->name)->count());
     }
 
     public function testUpdate()

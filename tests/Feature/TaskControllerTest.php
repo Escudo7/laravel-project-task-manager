@@ -48,10 +48,10 @@ class TaskControllerTest extends TestCase
 
     public function testStore()
     {
-        $data = ['name' => factory(Task::class)->make()->name];
-        $response = $this->post(route('tasks.store', $data));
+        $modelNewTask = factory(Task::class)->state('new task')->make();
+        $response = $this->post(route('tasks.store', $modelNewTask->toArray()));
         $response->assertStatus(302);
-        $this->assertEquals(3, Task::count());
+        $this->assertEquals(1, Task::where('name', $modelNewTask->name)->count());
     }
 
     public function testUpdate()
@@ -61,6 +61,7 @@ class TaskControllerTest extends TestCase
         $dataForUpdate['type'] = self::TYPE_GLOBAL_UPDATE;
 
         $response = $this->patch(route('tasks.update', $this->task1), $dataForUpdate);
+        $response->assertStatus(302);
 
         $this->task1->refresh();
         $this->assertEquals($this->task1->description, $dataForUpdate['description']);
@@ -69,7 +70,9 @@ class TaskControllerTest extends TestCase
     public function testUpdateGetTask()
     {
         $data = ['type' => self::TYPE_UPDATE_GET_TASK];
-        $this->patch(route('tasks.update', $this->task1), $data);
+        $response = $this->patch(route('tasks.update', $this->task1), $data);
+        $response->assertStatus(302);
+        
         $this->task1->refresh();
         $this->assertEquals($this->user, $this->task1->executor);
     }
@@ -79,7 +82,9 @@ class TaskControllerTest extends TestCase
         $this->task1->executor()->associate($this->user);
         $this->task1->save();
         $data = ['type' => self::TYPE_UPDATE_ABANDON_TASK];
-        $this->patch(route('tasks.update', $this->task1), $data);
+        $response = $this->patch(route('tasks.update', $this->task1), $data);
+        $response->assertStatus(302);
+
         $this->task1->refresh();
         $this->assertNotEquals($this->user, $this->task1->executor);
     }

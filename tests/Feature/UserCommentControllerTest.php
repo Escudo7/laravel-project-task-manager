@@ -20,7 +20,8 @@ class UserCommentControllerTest extends TestCase
         $task = factory(Task::class)->state('new task')->create();
         $modelComment = factory(Comment::class)->make();
         
-        $this->post(route('users.comments.store', $user), $modelComment->toArray());
-        $this->assertEquals(1, Comment::count());
+        $response = $this->post(route('users.comments.store', $user), $modelComment->toArray());
+        $response->assertStatus(302);
+        $this->assertEquals(1, Comment::where('body', $modelComment->body)->count());
     }
 }

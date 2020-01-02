@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
-    public const NEW_TASK_STATUS_NUMBER = 1;
-    public const WORKING_TASK_STATUS_NUMBER = 2;
-    
     /**
      * Display a listing of the resource.
      *
@@ -25,12 +22,14 @@ class TaskController extends Controller
         $users = User::all();
         $tags = Tag::all();
         $statuses = TaskStatus::all();
-
-        $query = Task::orderBy('id');
         $data = $request->all();
         if (isset($data['filter']['myTasks'])) {
-            $query = $query->myTasks($request->user()->id);
+            $user = $request->user();
+            $createdTask = $user->createdTasks();
+            $assignedTask = $user->assignedTasks();
+            $query = $createdTask->union($assignedTask);
         } else {
+            $query = Task::orderBy('id');
             $query = array_reduce(array_keys($data), function ($acc, $key) use ($data) {
                 if (!isset($data[$key])) {
                     return $acc;
@@ -63,7 +62,8 @@ class TaskController extends Controller
         $task = new Task();
         $users = User::all();
         $tags = Tag::all();
-        return view('task.create', compact('task', 'users', 'tags'));
+        $statuses = TaskStatus::all();
+        return view('task.create', compact('task', 'users', 'tags', 'statuses'));
     }
 
     /**
@@ -84,11 +84,9 @@ class TaskController extends Controller
             'tags' => ['exists:tags,id', 'nullable']
         ]);
 
-        $statusNewTask = TaskStatus::find(self::NEW_TASK_STATUS_NUMBER);
         $task = new Task();
         $task->fill($request->except('tags', 'newTag'));
         $task->creator()->associate($request->user());
-        $task->status()->associate($statusNewTask);
         $task->save();
 
         if ($request['tags']) {
@@ -197,8 +195,6 @@ class TaskController extends Controller
                 }
 
                 $task->executor()->associate($user);
-                $statusWorkingTask = TaskStatus::find(self::WORKING_TASK_STATUS_NUMBER);
-                $task->status()->associate($statusWorkingTask);
                 $task->save();
 
                 session()->flash('success', __('You have successfully taken the task!'));
@@ -211,8 +207,6 @@ class TaskController extends Controller
                 }
 
                 $task->executor()->dissociate();
-                $notWorkingTaskStatus = TaskStatus::find(self::NEW_TASK_STATUS_NUMBER);
-                $task->status()->associate($notWorkingTaskStatus);
                 $task->save();
                 
                 session()->flash('warning', __('You abandoned task'));
