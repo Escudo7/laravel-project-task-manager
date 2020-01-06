@@ -23,7 +23,6 @@ class TaskControllerTest extends TestCase
     {
         parent::setUp();
 
-        factory(User::class)->create();
         $this->task1 = factory(Task::class)->state(self::NEW_TASK_STATUS)->create();
         $this->task2 = factory(Task::class)->state(self::WORKING_TASK_STATUS)->create();
         $this->user = User::first();

@@ -11,9 +11,6 @@ use App\Task;
 
 class UserController extends Controller
 {
-    public const NEW_TASK_STATUS_NUMBER = 1;
-    public const TERMINATED_TASK_STATUS_NUMBER = 1;
-    
     /**
      * Display a listing of the resource.
      *
@@ -39,9 +36,9 @@ class UserController extends Controller
             'warning' => session('warning'),
             'error' => session('error')
         ];
-        $currentUser = $request->user();
+        $isUser = $request->user() == $user;
         $tasks = Task::all();
-        return view('user.show', compact('user', 'message', 'currentUser', 'tasks'));
+        return view('user.show', compact('user', 'message', 'tasks', 'isUser'));
     }
 
     /**
@@ -129,11 +126,6 @@ class UserController extends Controller
 
         foreach ($user->assignedTasks as $task) {
             $task->executor()->dissociate();
-            $statusTerminatedTask = TaskStatus::find(self::TERMINATED_TASK_STATUS_NUMBER);
-            if ($task->status != $statusTerminatedTask) {
-                $statusNotWorkingTask = TaskStatus::find(self::NEW_TASK_STATUS_NUMBER);
-                $task->status()->associate($statusNotWorkingTask);
-            }
             $task->save();
         }
 

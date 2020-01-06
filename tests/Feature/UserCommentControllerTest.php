@@ -15,9 +15,9 @@ class UserCommentControllerTest extends TestCase
 
     public function testStore()
     {
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
         $task = factory(Task::class)->state('new task')->create();
+        $user = User::first();
+        $this->actingAs($user);
         $modelComment = factory(Comment::class)->make();
         
         $response = $this->post(route('users.comments.store', $user), $modelComment->toArray());

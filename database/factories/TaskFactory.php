@@ -4,12 +4,13 @@
 
 use Faker\Generator as Faker;
 use App\Task;
+use App\User;
 
 $factory->define(Task::class, function (Faker $faker) {
     return [
         'name' => $faker->sentence(),
         'description' => $faker->sentence(),
-        'creator_id' => 1,
+        'creator_id' => factory(User::class),
     ];
 });
 

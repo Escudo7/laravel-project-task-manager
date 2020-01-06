@@ -56,7 +56,7 @@
                             </div>
                         </div>
                     @endif
-                    @if($currentUser == $user)
+                    @if($isUser)
                         <div class="row">
                             <div class="col">
                                 <p>E-mail</p>
@@ -151,7 +151,7 @@
                 </div>
             </div>
         </div>
-        @if($user->id == $currentUser->id)
+        @if($isUser)
             <div class="col-sm-3">
                 <div class="card">
                     <div class="card-header bg-secondary text-white text-center pt-3 pb-1">

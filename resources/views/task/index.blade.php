@@ -128,7 +128,7 @@
                      {{ __('not assigned') }}
                 @endif
             </td>
-            <td class="{{ $task->status->id == 4 ? 'text-success' : '' }}">
+            <td>
                 {{ $task->status->name }}
             </td>
             <td>{{ $task->created_at }}</td>

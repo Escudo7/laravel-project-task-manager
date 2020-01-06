@@ -62,11 +62,7 @@
                             <div class="col-md-6">
                                 <select class="form-control" id="status_id" name="status_id" value="{{ old('status_id') ?? $task->status_id }}">
                                 @foreach($statuses as $status)
-                                    @if($status->id == 1)
-                                        <option selected value="{{ $status->id}} ">{{ $status->name }}</option>
-                                    @else
-                                        <option value="{{ $status->id}} ">{{ $status->name }}</option>
-                                    @endif
+                                    <option value="{{ $status->id}} ">{{ $status->name }}</option>
                                 @endforeach
                                 </select>
                             </div>

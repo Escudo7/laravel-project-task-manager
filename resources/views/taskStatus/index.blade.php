@@ -15,7 +15,7 @@
     @foreach($statuses as $status)
         <tr>
             <td>{{ $status->id }}</td>
-            <td class="{{ $status->id == 4 ? 'text-success' : '' }}">{{ $status->name }}</td>
+            <td>{{ $status->name }}</td>
             <td>
                 <div class="btn btn-primary">
                     <a href="{{ route('task_statuses.edit', $status) }}" class="text-white">{{ __('Change name') }}</a>

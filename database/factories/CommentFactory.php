@@ -9,7 +9,7 @@ use App\User;
 $factory->define(Comment::class, function (Faker $faker) {
     return [
         'body' => $faker->unique()->sentence,
-        'creator_id' => User::first(),
-        'task_id' => Task::first()
+        'creator_id' => factory(User::class),
+        'task_id' => factory(Task::class)->state('new task')
     ];
 });

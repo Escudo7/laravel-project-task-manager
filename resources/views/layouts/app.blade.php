@@ -63,7 +63,7 @@
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('users.show', Auth::user()->id) }}">
+                    <a class="nav-link" href="{{ route('users.show', Auth::user()) }}">
                         {{ Auth::user()->name }} 
                     </a>
                 </li>
