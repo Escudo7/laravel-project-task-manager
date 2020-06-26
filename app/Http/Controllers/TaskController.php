@@ -36,13 +36,13 @@ class TaskController extends Controller
                 }
                 switch ($key) {
                     case 'creator':
-                        return is_int($data[$key]) ? $acc->creator($data[$key]) : $acc;
+                        return ctype_digit($data[$key]) ? $acc->creator($data[$key]) : $acc;
                     case 'executor':
-                        return is_int($data[$key]) ? $acc->executor($data[$key]) : $acc;
+                        return ctype_digit($data[$key]) ? $acc->executor($data[$key]) : $acc;
                     case 'status':
-                        return is_int($data[$key]) ? $acc->status($data[$key]) : $acc;
+                        return ctype_digit($data[$key]) ? $acc->status($data[$key]) : $acc;
                     case 'tag':
-                        return is_int($data[$key]) ? $acc->tag($data[$key]) : $acc;
+                        return ctype_digit($data[$key]) ? $acc->tag($data[$key]) : $acc;
                     default:
                         return $acc;
                 }
