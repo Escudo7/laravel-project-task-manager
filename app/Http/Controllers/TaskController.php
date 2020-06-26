@@ -36,13 +36,13 @@ class TaskController extends Controller
                 }
                 switch ($key) {
                     case 'creator':
-                        return $acc->creator($data[$key]);
+                        return is_int($data[$key]) ? $acc->creator($data[$key]) : $acc;
                     case 'executor':
-                        return $acc->executor($data[$key]);
+                        return is_int($data[$key]) ? $acc->executor($data[$key]) : $acc;
                     case 'status':
-                        return $acc->status($data[$key]);
+                        return is_int($data[$key]) ? $acc->status($data[$key]) : $acc;
                     case 'tag':
-                        return $acc->tag($data[$key]);
+                        return is_int($data[$key]) ? $acc->tag($data[$key]) : $acc;
                     default:
                         return $acc;
                 }
@@ -208,7 +208,7 @@ class TaskController extends Controller
 
                 $task->executor()->dissociate();
                 $task->save();
-                
+
                 session()->flash('warning', __('You abandoned task'));
                 break;
         }
