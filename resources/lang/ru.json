@@ -104,5 +104,6 @@
     "You have been successfully registered!": "Вы были успешно зарегистрированы!",
     "You have been successfully logged in!": "Вы были успешно авторизованы!",
     "You are logged out": "Вы вышли из системы",
-    "Register": "Зарегистрировать"
+    "Register": "Зарегистрировать",
+    "Code invite": "Код приглашения"
 }

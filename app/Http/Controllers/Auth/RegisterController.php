@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 class RegisterController extends Controller
 {
     use RegistersUsers;
-    
+
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -58,6 +58,7 @@ class RegisterController extends Controller
             'birth_year' => ['integer', 'min:1930', 'max:2015', 'nullable'],
             'country' => ['string', 'max:255', 'nullable'],
             'city' => ['string', 'max:255', 'nullable'],
+            'invite' => ['required', Rule::in(['escudo'])],
         ]);
     }
 

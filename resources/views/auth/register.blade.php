@@ -91,6 +91,17 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="invite" class="col-md-4 col-form-label text-md-right">{{ __('Code invite') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="invite" type="text" class="form-control" name="invite" required autocomplete="code invite">
+                                <small id="nameHelpBlock" class="form-text text-muted">
+                                    {{ __('Required field') }}
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="firstname" class="col-md-4 col-form-label text-md-right">{{ __('First name') }}</label>
 
                             <div class="col-md-6">
